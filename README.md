@@ -1,2 +1,3 @@
-# it-sat
-IT-Security Awarness Training (it-sat) ist ein Projekt, welches im Rahmen einer Hausarbeit entwickelt wurde. Es ist gamifizierte Schulung zur Förderung eines IT-Sicherheitsbewusstseins und leg den Schwerpunkt auf Phishing.
+# it-sat 
+IT-Security Awarness Training (kurz "it-sat") ist ein Projekt, welches im Rahmen einer Hausarbeit entwickelt wurde. Es beinhaltet eine gamifizierte Schulung zur Förderung eines IT-Sicherheitsbewusstseins im unternehmerischen Kontext und leg den Schwerpunkt auf die Aufklärung und Prävention von Phishing.
+Entwickelt wurde die Schulung mithilfe der [Godot Engine](https://godotengine.org/).
