@@ -1,0 +1,70 @@
+.btn-default {
+    padding-left: 1px;
+    padding-right: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-left: 2px;
+    margin-top: 4px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    width: 80%;
+    margin-bottom: 8px;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    font-size: 10px;
+}
+
+.btn-default:hover {
+    background-color: rgb(78, 167, 255);
+    scale: 1.1 1.1;
+    color: rgb(255, 255, 255);
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    opacity: 1;
+}
+
+.btn-default:active {
+    background-color: rgb(186, 221, 255);
+    scale: 1.1 1.1;
+    color: rgb(255, 255, 255);
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    font-size: 10px;
+}
+
+.btn-active {
+    padding-left: 1px;
+    padding-right: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-left: 2px;
+    margin-top: 4px;
+    border-left-width: 1.5px;
+    border-right-width: 1.5px;
+    border-top-width: 1.5px;
+    border-bottom-width: 1.5px;
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    width: 80%;
+    margin-bottom: 8px;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    border-left-color: rgb(78, 167, 255);
+    border-right-color: rgb(78, 167, 255);
+    border-top-color: rgb(78, 167, 255);
+    border-bottom-color: rgb(78, 167, 255);
+    -unity-font-style: normal;
+    -unity-text-outline-width: 0;
+    letter-spacing: 0;
+    -unity-paragraph-spacing: 0;
+}
