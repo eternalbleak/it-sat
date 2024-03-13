@@ -8,11 +8,18 @@ public class Chapter
     public string title;
     public bool done;
     public VisualElement referenceElement;
+    private UIController _controller;
 
-    public Chapter(string title, VisualElement referenceElement)
+    public Chapter(string title, VisualElement referenceElement, UIController controller)
     {
         this.title = title;
         this.done = false;
         this.referenceElement = referenceElement;
+        this._controller = controller;
+    }
+
+    public void ChapterButtonClickerd()
+    {
+        _controller.SwitchChapter(this);
     }
 }

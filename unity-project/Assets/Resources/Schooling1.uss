@@ -18,7 +18,8 @@
     margin-bottom: 8px;
     transition-duration: 0.2s;
     transition-timing-function: linear;
-    font-size: 10px;
+    font-size: 14px;
+    -unity-font-style: normal;
 }
 
 .btn-default:hover {
@@ -28,6 +29,7 @@
     transition-duration: 0.2s;
     transition-timing-function: ease;
     opacity: 1;
+    -unity-font-style: normal;
 }
 
 .btn-default:active {
@@ -36,7 +38,7 @@
     color: rgb(255, 255, 255);
     transition-duration: 0.2s;
     transition-timing-function: ease;
-    font-size: 10px;
+    height: auto;
 }
 
 .btn-active {

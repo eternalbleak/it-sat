@@ -21,7 +21,9 @@ public class UIController : MonoBehaviour
         
         foreach(Button btn in temp_btns)
         {
-            Chapter temp = new Chapter(btn.text, btn);
+            Chapter temp = new Chapter(btn.text, btn, this);
+
+            btn.clicked += temp.ChapterButtonClickerd;
 
             _chapters.Add(temp);
 
@@ -40,4 +42,15 @@ public class UIController : MonoBehaviour
     {
         
     }
+
+    public void SwitchChapter(Chapter chapter)
+    {
+        if (chapter != _currentChapter)
+        {
+            _currentChapter.referenceElement.RemoveFromClassList("btn-active");
+            chapter.referenceElement.AddToClassList("btn-active");
+            _currentChapter = chapter;
+        }
+    }
+
 }
