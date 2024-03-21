@@ -13,8 +13,26 @@ MonoBehaviour:
   m_Name: Test Chapter
   m_EditorClassIdentifier: 
   title: Test Chapter
-  contentData:
-  - contentType: 1
-    content_text: 
+  chapterContent:
   - contentType: 2
-    content_text: 
+    contentText: eananrnawe
+    contentChoices:
+    - choiceText: arwrb
+      choiceIsCorrect: 0
+    - choiceText: t4
+      choiceIsCorrect: 0
+    - choiceText: ab
+      choiceIsCorrect: 1
+    - choiceText: rbnata
+      choiceIsCorrect: 0
+  - contentType: 2
+    contentText: eananrnawe
+    contentChoices:
+    - choiceText: arwrb
+      choiceIsCorrect: 0
+    - choiceText: t4
+      choiceIsCorrect: 0
+    - choiceText: ab
+      choiceIsCorrect: 1
+    - choiceText: rbnata
+      choiceIsCorrect: 0

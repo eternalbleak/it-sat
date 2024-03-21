@@ -8,13 +8,17 @@ public enum ContentType
     NONE,
     DESCRIPTION,
     MULTIPLE_CHOICE,
+    ALLOCATION,
 }
 
 [Serializable]
 public class ContentData
 {
     public ContentType contentType = ContentType.NONE;
-    [TextArea] public string content_text;
+    [TextArea] public string contentText;
+
+    public List<Choice> contentChoices;
+
 }
 
 

@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditorInternal;
+#endif
+
 
 [CreateAssetMenu(menuName ="Custom/ChapterData", fileName ="new ChapterData")]
 public class ChapterData : ScriptableObject
 {
     public string title;
-    public List<ContentData> contentData;
+    public List<ContentData> chapterContent;
 }
 
 
@@ -16,74 +20,152 @@ public class ChapterData : ScriptableObject
 
 /*TODO
  - Add Documentation, else nobody knows what stuff does 
- - put all the reorderable list functionality into the creation line same as the sof contributer did -> can simplify the code
  - Add different Content Types, Multiple Choice and Single Choice, Moveable Stuff thing
  */
 
 [CustomEditor(typeof(ChapterData))]
 class ChapterDataEditor : Editor
 {
+    private const int MAX_MULTICHOICE = 5;
+
     ChapterData data;
 
-    SerializedProperty contentDataProperty; // prop of List<ContenData> contentData
+    SerializedProperty chapterContentProperty; // prop of List<ContenData> chapterContent)
 
-    ReorderableList reorderableList;
+    ReorderableList chapterContentList, multipleChoiceList;
 
     private void OnEnable()
     {
         data = (ChapterData)target;
 
-        contentDataProperty = serializedObject.FindProperty(nameof(ChapterData.contentData));
+        chapterContentProperty = serializedObject.FindProperty(nameof(ChapterData.chapterContent));
 
-        reorderableList = new ReorderableList(serializedObject, contentDataProperty, true, true, true, true);
-
-        reorderableList.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, "Chapter Content"); };
-
-        reorderableList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+        // List that holds the individual chapterContent Items
+        chapterContentList = new ReorderableList(serializedObject, chapterContentProperty)
         {
-            var element = reorderableList.serializedProperty.GetArrayElementAtIndex(index);
+            displayAdd = true,
+            displayRemove = true,
+            draggable = true,
 
-            
+            drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, "Chapter Content List"); },
 
-            if(element != null ) 
+            drawElementCallback = (Rect rect, int contentIndex, bool isActive, bool isFocused) =>
             {
-                var contentTextProp = element.FindPropertyRelative(nameof(ContentData.content_text));
+                var element = chapterContentList.serializedProperty.GetArrayElementAtIndex(contentIndex);
 
-                data.contentData[index].contentType = (ContentType) EditorGUI.EnumPopup(
-                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), "Content Type: ", data.contentData[index].contentType);
+                var contentTextProp = element.FindPropertyRelative(nameof(ContentData.contentText));
+                var contenTypeProp = element.FindPropertyRelative(nameof(ContentData.contentType));
+                var contentChoicesProp = element.FindPropertyRelative(nameof(ContentData.contentChoices));
 
-                rect.y += EditorGUI.GetPropertyHeight(element.FindPropertyRelative(nameof(ContentData.contentType)));
+                if (element != null)
+                {
+                    data.chapterContent[contentIndex].contentType = (ContentType)EditorGUI.EnumPopup(
+                         new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), "Content Type: ", data.chapterContent[contentIndex].contentType);
 
-                switch (data.contentData[index].contentType){
+                    rect.y += EditorGUI.GetPropertyHeight(contenTypeProp);
+
+                    var text_heigth = EditorGUI.GetPropertyHeight(contentTextProp);
+
+                    switch (data.chapterContent[contentIndex].contentType)
+                    {
+                        
+                        case ContentType.NONE: break;
+                        case ContentType.DESCRIPTION:
+                            
+                            EditorGUI.PropertyField(
+                                 new Rect(rect.x, rect.y, rect.width, text_heigth), contentTextProp, new GUIContent("Content Text"));
+                            break;
+
+                        case ContentType.MULTIPLE_CHOICE: 
+                            
+                            EditorGUI.PropertyField(
+                                 new Rect(rect.x, rect.y, rect.width, text_heigth), contentTextProp, new GUIContent("Question Text"));
+
+                            //second list that holds multiple choice
+                            multipleChoiceList = new ReorderableList(contentChoicesProp.serializedObject, contentChoicesProp)
+                            {
+                                displayAdd = true,
+                                displayRemove = true,
+                                draggable = true,
+
+                                drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, "Answer Options"); },
+
+                                drawElementCallback = (Rect rect, int multChoiceElementIndex, bool isActive, bool isFocused) =>
+                                {
+                                    var multiChoiceElement = contentChoicesProp.GetArrayElementAtIndex(multChoiceElementIndex);
+
+                                    var choiceText = multiChoiceElement.FindPropertyRelative(nameof(Choice.choiceText));
+
+
+                                    EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), choiceText);
+                                    rect.y += EditorGUIUtility.singleLineHeight;
+
+                                    EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width - 20, EditorGUIUtility.singleLineHeight), "Correct Answer?");
+
+                                    data.chapterContent[contentIndex].contentChoices[multChoiceElementIndex].choiceIsCorrect =
+                                    EditorGUI.Toggle(new Rect(rect.x + rect.width - 20, rect.y, 20, EditorGUIUtility.singleLineHeight), data.chapterContent[contentIndex].contentChoices[multChoiceElementIndex].choiceIsCorrect);
+                                },
+
+                                elementHeight = 2 * EditorGUIUtility.singleLineHeight,
+
+                                onAddCallback = (ReorderableList list) =>
+                                {
+                                    // secures the only 5 multiple choice anwers are possible, also adds a completly fresh one instead of copying the previous
+                                    if(list.count < MAX_MULTICHOICE)
+                                    {
+                                        list.serializedProperty.arraySize++;
+                                        var newElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
+
+                                        var newChoiceText = newElement.FindPropertyRelative(nameof(Choice.choiceText));
+
+                                        newChoiceText.stringValue = "";
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("Reached Max Multiple Choice Count!");
+                                    }
+                                }
+                            };
+
+                            //displaying new sublist
+                            multipleChoiceList.DoList(new Rect(rect.x, rect.y + EditorGUIUtility.singleLineHeight + GetMultipleChoiceHeight(contentChoicesProp.GetArrayElementAtIndex(contentIndex)), rect.width, rect.height));
+
+                            break;
+
+                        case ContentType.ALLOCATION: break;
+                    }
+                }
+            },
+
+            // bad make better
+            elementHeightCallback = (int index) =>
+            {
+                var element = chapterContentList.serializedProperty.GetArrayElementAtIndex(index);
+
+                var contentTextProp = element.FindPropertyRelative(nameof(ContentData.contentText));
+                var contenTypeProp = element.FindPropertyRelative(nameof(ContentData.contentType));
+                var contentChoicesProp = element.FindPropertyRelative(nameof(ContentData.contentChoices));
+
+                float otherContentHeigth = 0f;
+
+                switch (data.chapterContent[index].contentType)
+                {
                     case ContentType.NONE: break;
                     case ContentType.DESCRIPTION:
-                        var text_heigth = EditorGUI.GetPropertyHeight(contentTextProp);
-                        EditorGUI.PropertyField(
-                            new Rect(rect.x, rect.y, rect.width, text_heigth), contentTextProp, new GUIContent("Content Text"));
+                        otherContentHeigth += EditorGUI.GetPropertyHeight(contentTextProp);
                         break;
+                    case ContentType.MULTIPLE_CHOICE:
+                        otherContentHeigth += EditorGUI.GetPropertyHeight(contentTextProp);     
+                        otherContentHeigth += GetMultipleChoiceHeight(contentChoicesProp);
+                        otherContentHeigth += EditorGUIUtility.singleLineHeight * 2;
+                        break;
+                    case ContentType.ALLOCATION: break;
                 }
+
+                return EditorGUI.GetPropertyHeight(contenTypeProp) + otherContentHeigth + EditorGUIUtility.singleLineHeight;
+
+
             }
-        };
-
-        reorderableList.elementHeightCallback = index =>
-        {
-            var element = reorderableList.serializedProperty.GetArrayElementAtIndex(index);
-
-            var contenType = element.FindPropertyRelative(nameof(ContentData.contentType));
-
-            float otherContentHeigth = 0f;
-
-            switch (data.contentData[index].contentType)
-            {
-                case ContentType.NONE: break;
-                case ContentType.DESCRIPTION:
-                    otherContentHeigth += EditorGUI.GetPropertyHeight(
-                        element.FindPropertyRelative(nameof(ContentData.content_text))); 
-                    break;
-            }
-
-            return EditorGUI.GetPropertyHeight(contenType) + otherContentHeigth + EditorGUIUtility.singleLineHeight;
-
         };
     }
 
@@ -92,10 +174,26 @@ class ChapterDataEditor : Editor
         base.serializedObject.FindProperty("title").stringValue = EditorGUILayout.TextField("Chapter Title", data.title);
 
         serializedObject.Update();
-        reorderableList.DoLayoutList();
+        chapterContentList.DoLayoutList();
+
 
         base.serializedObject.ApplyModifiedProperties();
     }
+
+
+    #region Helper
+
+    private float GetMultipleChoiceHeight(SerializedProperty multichoice)
+    {
+        var height = EditorGUIUtility.singleLineHeight;
+
+        height +=  EditorGUIUtility.singleLineHeight * 2 * Mathf.Max(1, multichoice.arraySize) + EditorGUI.GetPropertyHeight(multichoice);
+
+        return height;
+    }
+
+    #endregion
+
 }
 
 #endif
