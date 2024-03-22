@@ -19,6 +19,8 @@ public class ContentData
 
     public List<Choice> contentChoices;
 
+    public List<Bucket> contentBuckets;
+
 }
 
 

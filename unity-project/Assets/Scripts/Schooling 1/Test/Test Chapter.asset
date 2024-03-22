@@ -25,7 +25,8 @@ MonoBehaviour:
       choiceIsCorrect: 1
     - choiceText: rbnata
       choiceIsCorrect: 0
-  - contentType: 2
+    contentBuckets: []
+  - contentType: 3
     contentText: eananrnawe
     contentChoices:
     - choiceText: arwrb
@@ -36,3 +37,10 @@ MonoBehaviour:
       choiceIsCorrect: 1
     - choiceText: rbnata
       choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: 
+      bucketContents: []
+      foldout: 1
+    - bucketName: agag
+      bucketContents: []
+      foldout: 1

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.PackageManager;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -58,6 +60,9 @@ class ChapterDataEditor : Editor
                 var contentTextProp = element.FindPropertyRelative(nameof(ContentData.contentText));
                 var contenTypeProp = element.FindPropertyRelative(nameof(ContentData.contentType));
                 var contentChoicesProp = element.FindPropertyRelative(nameof(ContentData.contentChoices));
+                var contentBucketsProp = element.FindPropertyRelative(nameof(ContentData.contentBuckets));
+
+                string listKey = element.propertyPath;
 
                 if (element != null)
                 {
@@ -86,7 +91,7 @@ class ChapterDataEditor : Editor
                             //second list that holds multiple choice
                             ReorderableList multipleChoiceList;
 
-                            string listKey = element.propertyPath;
+                            listKey = element.propertyPath + data.chapterContent[contentIndex].contentType.ToString();
 
                             if (innerListLookup.ContainsKey(listKey))
                             {
@@ -147,7 +152,119 @@ class ChapterDataEditor : Editor
 
                             break;
 
-                        case ContentType.ALLOCATION: break;
+                        case ContentType.ALLOCATION:
+
+                            //buckets list
+                            ReorderableList bucketList;
+
+                            listKey = element.propertyPath + data.chapterContent[contentIndex].contentType.ToString();
+
+                            if (innerListLookup.ContainsKey(listKey))
+                            {
+                                bucketList = innerListLookup[listKey];
+                            }
+                            else
+                            {
+                                bucketList = new ReorderableList(contentBucketsProp.serializedObject, contentBucketsProp)
+                                {
+                                    displayAdd = true,
+                                    displayRemove = true,
+                                    draggable = true,
+
+                                    drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, "Buckets"); },
+
+                                    drawElementCallback = (Rect rect, int bucketIndex, bool isActive, bool isFocused) =>
+                                    {
+                                        var bucketElement = contentBucketsProp.GetArrayElementAtIndex(bucketIndex);
+
+                                        var bucketContents = bucketElement.FindPropertyRelative(nameof(Bucket.bucketContents));
+
+                                        var bucketFoldout = bucketElement.FindPropertyRelative(nameof(Bucket.foldout));
+                                        var bucketName = bucketElement.FindPropertyRelative(nameof(Bucket.bucketName));
+
+                                        bucketFoldout.boolValue = EditorGUI.Foldout(new Rect(rect.x + 10, rect.y, 10, EditorGUIUtility.singleLineHeight), bucketFoldout.boolValue,
+                                            bucketFoldout.boolValue ? "" : bucketName.displayName + " : " + bucketName.stringValue);
+
+                                        if (bucketFoldout.boolValue == true)
+                                        {
+                                            EditorGUI.PropertyField(new Rect(rect.x + 10, rect.y, rect.width, EditorGUIUtility.singleLineHeight), bucketName);
+
+                                            // Bucket Content List
+                                            ReorderableList bucketContentList;
+
+                                            listKey = contentBucketsProp.propertyPath + bucketName.propertyPath;
+
+                                            if (innerListLookup.ContainsKey(listKey))
+                                            {
+                                                bucketContentList = innerListLookup[listKey];
+                                            }
+                                            else
+                                            {
+                                                bucketContentList = new ReorderableList(bucketContents.serializedObject, bucketContents)
+                                                {
+                                                    displayAdd = true,
+                                                    displayRemove = true,
+                                                    draggable = true,
+
+                                                    drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, bucketName.stringValue); },
+
+                                                    drawElementCallback = (Rect rect, int bucketContentIndex, bool isActive, bool isFocused) =>
+                                                    {
+                                                        var bucketContentElement = bucketContents.GetArrayElementAtIndex(bucketContentIndex);
+                                                        var contentText = bucketContentElement.FindPropertyRelative(nameof(BucketContent.contentText));
+
+                                                        EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), contentText);
+                                                    },
+
+                                                    onAddCallback = (ReorderableList list) =>
+                                                    {
+                                                        list.serializedProperty.arraySize++;
+
+                                                        var newElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
+                                                        var contentText = newElement.FindPropertyRelative(nameof(BucketContent.contentText));
+
+                                                        contentText.stringValue = "";
+                                                        
+                                                    },
+                                                };
+
+                                                innerListLookup[listKey] = bucketContentList;
+                                            }
+
+                                            bucketContentList.DoList(new Rect(rect.x, rect.y + EditorGUIUtility.singleLineHeight, rect.width, rect.width));
+
+                                        }
+                                    },
+
+                                    elementHeightCallback = (int index) =>
+                                    {
+                                        return GetBucketHeight(contentBucketsProp.GetArrayElementAtIndex(index));
+                                    },
+
+                                    onAddCallback = (ReorderableList list) =>
+                                    {
+                                        list.serializedProperty.arraySize++;
+                                        var newElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
+
+                                        var bucketName = newElement.FindPropertyRelative(nameof(Bucket.bucketName));
+                                        var bucketContents = newElement.FindPropertyRelative(nameof(Bucket.bucketContents));
+                                        var bucketFoldout = newElement.FindPropertyRelative(nameof(Bucket.foldout));
+
+                                        bucketName.stringValue = "New Bucket";
+                                        bucketContents.arraySize = 0;
+                                        bucketFoldout.boolValue = false;
+
+                                    }
+
+                                    
+                                };
+
+                                innerListLookup[listKey] = bucketList;
+                            }
+
+                            bucketList.DoList(new Rect(rect.x, rect.y + EditorGUIUtility.singleLineHeight, rect.width, GetBucketsHeight(contentBucketsProp)));
+
+                            break;
                     }
                 }
             },
@@ -160,6 +277,7 @@ class ChapterDataEditor : Editor
                 var contentTextProp = element.FindPropertyRelative(nameof(ContentData.contentText));
                 var contenTypeProp = element.FindPropertyRelative(nameof(ContentData.contentType));
                 var contentChoicesProp = element.FindPropertyRelative(nameof(ContentData.contentChoices));
+                var contentBucketsProp = element.FindPropertyRelative(nameof(ContentData.contentBuckets));
 
                 float otherContentHeigth = 0f;
 
@@ -174,11 +292,24 @@ class ChapterDataEditor : Editor
                         otherContentHeigth += GetMultipleChoiceHeight(contentChoicesProp);
                         otherContentHeigth += EditorGUIUtility.singleLineHeight * 2;
                         break;
-                    case ContentType.ALLOCATION: break;
+                    case ContentType.ALLOCATION:
+                        otherContentHeigth += GetBucketsHeight(contentBucketsProp);
+                        break;
                 }
 
                 return EditorGUI.GetPropertyHeight(contenTypeProp) + otherContentHeigth + EditorGUIUtility.singleLineHeight;
 
+
+            },
+
+            onAddCallback = (ReorderableList list) =>
+            {
+                list.serializedProperty.arraySize++;
+
+                var newElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
+                var contentType = newElement.FindPropertyRelative(nameof(ContentData.contentType));
+
+                contentType.enumValueIndex = 0;
 
             }
         };
@@ -202,7 +333,66 @@ class ChapterDataEditor : Editor
     {
         var height = EditorGUIUtility.singleLineHeight;
 
-        height +=  EditorGUIUtility.singleLineHeight * 2 * Mathf.Max(1, multichoice.arraySize) + EditorGUI.GetPropertyHeight(multichoice);
+        if (multichoice.isArray) 
+        {
+            height += EditorGUIUtility.singleLineHeight * 2 * Mathf.Max(1, multichoice.arraySize) + EditorGUI.GetPropertyHeight(multichoice);
+        }
+        else
+        {
+            height += EditorGUIUtility.singleLineHeight * 2 + EditorGUI.GetPropertyHeight(multichoice);
+        }
+        
+
+        return height;
+    }
+
+    private float GetBucketsHeight(SerializedProperty buckets)
+    {
+        var height = EditorGUIUtility.singleLineHeight * 4;
+
+        for(int i = 0; i < buckets.arraySize; i++)
+        {
+            var element = buckets.GetArrayElementAtIndex(i);
+
+           
+
+            if (element.FindPropertyRelative(nameof(Bucket.foldout)).boolValue != false)
+            {
+                //height += 2 * EditorGUIUtility.singleLineHeight; //padding
+
+                height += GetBucketHeight(buckets.GetArrayElementAtIndex(i));
+            }
+            else
+            {
+                height += EditorGUIUtility.singleLineHeight;
+            }
+        }
+
+        return height;
+    }
+
+    private float GetBucketHeight(SerializedProperty bucket)
+    {
+        var height = EditorGUIUtility.singleLineHeight;
+
+        var bucketFoldout = bucket.FindPropertyRelative(nameof(Bucket.foldout));
+        var bucketContents = bucket.FindPropertyRelative(nameof(Bucket.bucketContents));
+
+        if (bucketFoldout.boolValue == true)
+        {
+            height += EditorGUIUtility.singleLineHeight * 3;
+
+            if (bucketContents.isArray)
+            {
+                height += EditorGUIUtility.singleLineHeight * 2 * Mathf.Max(1, bucketContents.arraySize);
+            }
+            else
+            {
+                height += EditorGUIUtility.singleLineHeight * 2;
+            }
+        }
+
+            
 
         return height;
     }
