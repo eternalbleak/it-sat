@@ -32,7 +32,9 @@ class ChapterDataEditor : Editor
 
     SerializedProperty chapterContentProperty; // prop of List<ContenData> chapterContent)
 
-    ReorderableList chapterContentList, multipleChoiceList;
+    ReorderableList chapterContentList;
+
+    Dictionary<string, ReorderableList> innerListLookup = new Dictionary<string, ReorderableList>();
 
     private void OnEnable()
     {
@@ -82,50 +84,63 @@ class ChapterDataEditor : Editor
                                  new Rect(rect.x, rect.y, rect.width, text_heigth), contentTextProp, new GUIContent("Question Text"));
 
                             //second list that holds multiple choice
-                            multipleChoiceList = new ReorderableList(contentChoicesProp.serializedObject, contentChoicesProp)
+                            ReorderableList multipleChoiceList;
+
+                            string listKey = element.propertyPath;
+
+                            if (innerListLookup.ContainsKey(listKey))
                             {
-                                displayAdd = true,
-                                displayRemove = true,
-                                draggable = true,
-
-                                drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, "Answer Options"); },
-
-                                drawElementCallback = (Rect rect, int multChoiceElementIndex, bool isActive, bool isFocused) =>
+                                multipleChoiceList = innerListLookup[listKey];
+                            }
+                            else
+                            {
+                                multipleChoiceList = new ReorderableList(contentChoicesProp.serializedObject, contentChoicesProp)
                                 {
-                                    var multiChoiceElement = contentChoicesProp.GetArrayElementAtIndex(multChoiceElementIndex);
+                                    displayAdd = true,
+                                    displayRemove = true,
+                                    draggable = true,
 
-                                    var choiceText = multiChoiceElement.FindPropertyRelative(nameof(Choice.choiceText));
+                                    drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, "Answer Options"); },
 
-
-                                    EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), choiceText);
-                                    rect.y += EditorGUIUtility.singleLineHeight;
-
-                                    EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width - 20, EditorGUIUtility.singleLineHeight), "Correct Answer?");
-
-                                    data.chapterContent[contentIndex].contentChoices[multChoiceElementIndex].choiceIsCorrect =
-                                    EditorGUI.Toggle(new Rect(rect.x + rect.width - 20, rect.y, 20, EditorGUIUtility.singleLineHeight), data.chapterContent[contentIndex].contentChoices[multChoiceElementIndex].choiceIsCorrect);
-                                },
-
-                                elementHeight = 2 * EditorGUIUtility.singleLineHeight,
-
-                                onAddCallback = (ReorderableList list) =>
-                                {
-                                    // secures the only 5 multiple choice anwers are possible, also adds a completly fresh one instead of copying the previous
-                                    if(list.count < MAX_MULTICHOICE)
+                                    drawElementCallback = (Rect rect, int multChoiceElementIndex, bool isActive, bool isFocused) =>
                                     {
-                                        list.serializedProperty.arraySize++;
-                                        var newElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
+                                        var multiChoiceElement = contentChoicesProp.GetArrayElementAtIndex(multChoiceElementIndex);
 
-                                        var newChoiceText = newElement.FindPropertyRelative(nameof(Choice.choiceText));
+                                        var choiceText = multiChoiceElement.FindPropertyRelative(nameof(Choice.choiceText));
 
-                                        newChoiceText.stringValue = "";
-                                    }
-                                    else
+
+                                        EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), choiceText);
+                                        rect.y += EditorGUIUtility.singleLineHeight;
+
+                                        EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width - 20, EditorGUIUtility.singleLineHeight), "Correct Answer?");
+
+                                        data.chapterContent[contentIndex].contentChoices[multChoiceElementIndex].choiceIsCorrect =
+                                        EditorGUI.Toggle(new Rect(rect.x + rect.width - 20, rect.y, 20, EditorGUIUtility.singleLineHeight), data.chapterContent[contentIndex].contentChoices[multChoiceElementIndex].choiceIsCorrect);
+                                    },
+
+                                    elementHeight = 2 * EditorGUIUtility.singleLineHeight,
+
+                                    onAddCallback = (ReorderableList list) =>
                                     {
-                                        Debug.Log("Reached Max Multiple Choice Count!");
+                                        // secures the only 5 multiple choice anwers are possible, also adds a completly fresh one instead of copying the previous
+                                        if (list.count < MAX_MULTICHOICE)
+                                        {
+                                            list.serializedProperty.arraySize++;
+                                            var newElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
+
+                                            var newChoiceText = newElement.FindPropertyRelative(nameof(Choice.choiceText));
+
+                                            newChoiceText.stringValue = "";
+                                        }
+                                        else
+                                        {
+                                            Debug.Log("Reached Max Multiple Choice Count!");
+                                        }
                                     }
-                                }
-                            };
+                                };
+
+                                innerListLookup[listKey] = multipleChoiceList;
+                            }
 
                             //displaying new sublist
                             multipleChoiceList.DoList(new Rect(rect.x, rect.y + EditorGUIUtility.singleLineHeight + GetMultipleChoiceHeight(contentChoicesProp.GetArrayElementAtIndex(contentIndex)), rect.width, rect.height));
