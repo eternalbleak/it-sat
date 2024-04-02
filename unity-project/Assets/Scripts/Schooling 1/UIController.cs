@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
+
+[Serializable]
+public struct TemplateContentTypePair
+{
+    public VisualTreeAsset visualElement;
+    public ContentType elementType;
+}
 
 public class UIController : MonoBehaviour
 {
@@ -9,11 +17,20 @@ public class UIController : MonoBehaviour
     [SerializeField] private List<Chapter> _chapters = new List<Chapter>();
     [SerializeField] private Chapter _currentChapter;
 
+    // *** UI ***
+
+    [SerializeField] private UIDocument _uIDocument;
+
+    public List<TemplateContentTypePair> templatesNormal;
+    public List<TemplateContentTypePair> templatesGamified;
+
     // Start is called before the first frame update
     void Start()
     {
+        _uIDocument = GetComponent<UIDocument>();
+
         // gets the root element of the VisualElementTree
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+        VisualElement root = _uIDocument.rootVisualElement;
 
         // get chapter elements
 
@@ -54,3 +71,4 @@ public class UIController : MonoBehaviour
     }
 
 }
+

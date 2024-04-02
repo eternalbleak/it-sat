@@ -15,13 +15,10 @@
         <ui:VisualElement name="contentContainer" style="flex-grow: 1; background-color: rgb(255, 255, 255); width: 80%; height: 100%; justify-content: flex-start;">
             <ui:Label tabindex="-1" text="Quamquam" display-tooltip-when-elided="true" name="contentHeading" style="-unity-font-style: bold; font-size: 20px; margin-top: 30px; margin-bottom: 15px; height: 10%; -unity-text-align: upper-center;" />
             <ui:Label tabindex="-1" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." display-tooltip-when-elided="true" name="contentText" style="white-space: normal; text-overflow: clip; height: 60%; padding-left: 12px; padding-right: 10px; font-size: 12px;" />
-            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); height: 5%; flex-direction: row;">
-                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: 80%;" />
-                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: 30%; flex-direction: row; margin-right: 20px; align-items: stretch; justify-content: flex-start; align-self: stretch;">
-                    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/UnityDefaultRuntimeTheme.tss?fileID=-2236324273849735119&amp;guid=99348de0c4290d846971aa38c5813a77&amp;type=3#arrow-left@2x&apos;); -unity-background-image-tint-color: rgb(0, 0, 0);" />
-                    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); -unity-background-image-tint-color: rgb(0, 0, 0); background-image: url(&apos;project://database/Assets/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=99348de0c4290d846971aa38c5813a77&amp;type=3#arrow-right@2x&apos;);" />
-                </ui:VisualElement>
-            </ui:VisualElement>
         </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; margin-right: 0; align-items: center; justify-content: center; align-self: auto; position: absolute; top: 80%; left: 60%; height: 113px; right: 45px; bottom: 0;">
+        <ui:Button text="Zurück" display-tooltip-when-elided="true" class="btn-progress-default" />
+        <ui:Button text="Weiter" display-tooltip-when-elided="true" class="btn-progress-default" />
     </ui:VisualElement>
 </ui:UXML>

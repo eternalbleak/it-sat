@@ -47,7 +47,7 @@
     padding-top: 4px;
     padding-bottom: 4px;
     margin-left: 2px;
-    margin-top: 4px;
+    margin-top: 2.5px;
     border-left-width: 1.5px;
     border-right-width: 1.5px;
     border-top-width: 1.5px;
@@ -58,7 +58,7 @@
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
     width: 80%;
-    margin-bottom: 8px;
+    margin-bottom: 6.5px;
     transition-duration: 0.2s;
     transition-timing-function: linear;
     border-left-color: rgb(78, 167, 255);
@@ -69,4 +69,30 @@
     -unity-text-outline-width: 0;
     letter-spacing: 0;
     -unity-paragraph-spacing: 0;
+}
+
+.btn-progress-default {
+    padding-left: 1px;
+    padding-right: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-left: 8px;
+    margin-top: 4px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(233, 233, 233);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    width: 40%;
+    margin-bottom: 8px;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    font-size: 14px;
+    -unity-font-style: normal;
+    height: 55%;
+    margin-right: 8px;
 }

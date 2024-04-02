@@ -14,20 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Test Chapter
   chapterContent:
-  - contentType: 2
+  - contentType: 1
     contentText: eananrnawe
-    contentChoices:
-    - choiceText: arwrb
-      choiceIsCorrect: 0
-    - choiceText: t4
-      choiceIsCorrect: 0
-    - choiceText: ab
-      choiceIsCorrect: 1
-    - choiceText: rbnata
-      choiceIsCorrect: 0
-    contentBuckets: []
-  - contentType: 3
-    contentText: eananrnawe
+    contentImage: {fileID: 0}
     contentChoices:
     - choiceText: arwrb
       choiceIsCorrect: 0
@@ -44,3 +33,48 @@ MonoBehaviour:
     - bucketName: agag
       bucketContents: []
       foldout: 1
+  - contentType: 2
+    contentText: eananrnawe
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: arwrb
+      choiceIsCorrect: 0
+    - choiceText: ab
+      choiceIsCorrect: 1
+    - choiceText: t4
+      choiceIsCorrect: 0
+    - choiceText: rbnata
+      choiceIsCorrect: 0
+    contentBuckets: []
+  - contentType: 3
+    contentText: eananrnawe
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: arwrb
+      choiceIsCorrect: 0
+    - choiceText: t4
+      choiceIsCorrect: 0
+    - choiceText: ab
+      choiceIsCorrect: 1
+    - choiceText: rbnata
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: 
+      bucketContents: []
+      foldout: 1
+    - bucketName: agag
+      bucketContents: []
+      foldout: 1
+  - contentType: 4
+    contentText: eananrnawe
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: arwrb
+      choiceIsCorrect: 0
+    - choiceText: t4
+      choiceIsCorrect: 0
+    - choiceText: ab
+      choiceIsCorrect: 1
+    - choiceText: rbnata
+      choiceIsCorrect: 0
+    contentBuckets: []

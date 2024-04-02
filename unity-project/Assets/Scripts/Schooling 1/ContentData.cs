@@ -7,6 +7,7 @@ public enum ContentType
 {
     NONE,
     DESCRIPTION,
+    DESCRIPTION_IMAGE,
     MULTIPLE_CHOICE,
     ALLOCATION,
 }
@@ -16,6 +17,8 @@ public class ContentData
 {
     public ContentType contentType = ContentType.NONE;
     [TextArea] public string contentText;
+
+    public Texture contentImage;
 
     public List<Choice> contentChoices;
 

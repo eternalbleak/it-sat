@@ -61,6 +61,7 @@ class ChapterDataEditor : Editor
                 var contenTypeProp = element.FindPropertyRelative(nameof(ContentData.contentType));
                 var contentChoicesProp = element.FindPropertyRelative(nameof(ContentData.contentChoices));
                 var contentBucketsProp = element.FindPropertyRelative(nameof(ContentData.contentBuckets));
+                var contentDescriptionTexture = element.FindPropertyRelative(nameof(ContentData.contentImage));
 
                 string listKey = element.propertyPath;
 
@@ -78,11 +79,19 @@ class ChapterDataEditor : Editor
                         
                         case ContentType.NONE: break;
                         case ContentType.DESCRIPTION:
+                        case ContentType.DESCRIPTION_IMAGE:
                             
                             EditorGUI.PropertyField(
                                  new Rect(rect.x, rect.y, rect.width, text_heigth), contentTextProp, new GUIContent("Content Text"));
-                            break;
 
+                            if (data.chapterContent[contentIndex].contentType == ContentType.DESCRIPTION_IMAGE)
+                            {
+                                rect.y += EditorGUI.GetPropertyHeight(contentTextProp) + EditorGUIUtility.singleLineHeight;
+                                EditorGUI.ObjectField(
+                                    new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), contentDescriptionTexture);
+                            }
+                            
+                            break;
                         case ContentType.MULTIPLE_CHOICE: 
                             
                             EditorGUI.PropertyField(
@@ -286,6 +295,9 @@ class ChapterDataEditor : Editor
                     case ContentType.NONE: break;
                     case ContentType.DESCRIPTION:
                         otherContentHeigth += EditorGUI.GetPropertyHeight(contentTextProp);
+                        break;
+                    case ContentType.DESCRIPTION_IMAGE:
+                        otherContentHeigth += EditorGUIUtility.singleLineHeight * 6;
                         break;
                     case ContentType.MULTIPLE_CHOICE:
                         otherContentHeigth += EditorGUI.GetPropertyHeight(contentTextProp);     

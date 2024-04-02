@@ -245,6 +245,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a1ac5659107fe4ab83e38f43ea2f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uIDocument: {fileID: 0}
+  templatesNormal:
+  - visualElement: {fileID: 0}
+    elementType: 0
+  templatesGamified: []
 --- !u!114 &1448011755
 MonoBehaviour:
   m_ObjectHideFlags: 0
