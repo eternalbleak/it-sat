@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Resources/Schooling1.uss?fileID=7433441132597879392&amp;guid=7fab9b33c9d44af4c9970b3ca0195b62&amp;type=3#Schooling1" />
     <ui:VisualElement name="rootContainer" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: 100%; height: 100%; flex-direction: row;">
-        <ui:VisualElement name="sidebarContainer" style="flex-grow: 1; background-color: rgb(233, 233, 233); width: 25%; justify-content: space-around; flex-direction: column; align-items: center; align-self: center; display: flex; height: 100%; border-top-right-radius: 0;">
+        <ui:VisualElement name="sidebarContainer" style="flex-grow: 1; background-color: rgb(233, 233, 233); width: 25%; justify-content: space-around; flex-direction: column; align-items: center; align-self: center; height: 100%; border-top-right-radius: 0;">
             <ui:Label tabindex="-1" text="Schulung 1" display-tooltip-when-elided="true" name="sidebarHeading" style="height: 10%; -unity-font-style: bold; -unity-text-align: middle-center; align-self: auto; text-overflow: clip; white-space: nowrap; margin-top: 40px; font-size: 20px; margin-bottom: 0; letter-spacing: -4px;" />
             <ui:VisualElement style="flex-grow: 1; background-color: rgb(0, 0, 0); height: 1px; width: 85%; border-top-left-radius: 1px; border-bottom-left-radius: 1px; border-top-right-radius: 1px; border-bottom-right-radius: 1px; max-height: 1px;" />
             <ui:VisualElement name="chapterContainer" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); height: 80%; margin-top: 0; padding-top: 5%; padding-bottom: 5%; justify-content: flex-start; align-items: center; align-self: auto; width: 100%;">
@@ -12,13 +12,15 @@
                 <ui:Button text="Quiz" display-tooltip-when-elided="true" name="chapter-btn" class="btn-default" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="contentContainer" style="flex-grow: 1; background-color: rgb(255, 255, 255); width: 80%; height: 100%; justify-content: flex-start;">
-            <ui:Label tabindex="-1" text="Quamquam" display-tooltip-when-elided="true" name="contentHeading" style="-unity-font-style: bold; font-size: 20px; margin-top: 30px; margin-bottom: 15px; height: 10%; -unity-text-align: upper-center;" />
-            <ui:Label tabindex="-1" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." display-tooltip-when-elided="true" name="contentText" style="white-space: normal; text-overflow: clip; height: 60%; padding-left: 12px; padding-right: 10px; font-size: 12px;" />
+        <ui:VisualElement name="contentContainer" style="flex-grow: 1; background-color: rgb(255, 255, 255); height: 100%; width: 80%; align-items: center; justify-content: flex-start;">
+            <ui:VisualElement name="dummyContent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: 100%; height: 100%; align-items: center; justify-content: center;">
+                <ui:Label tabindex="-1" text="Schulung 1" display-tooltip-when-elided="true" style="-unity-font-style: bold; font-size: 20px; -unity-text-align: middle-center;" />
+                <ui:Label tabindex="-1" text="Klicke auf weiter um zu beginnen." display-tooltip-when-elided="true" style="-unity-font-style: normal; font-size: 16px; -unity-text-align: middle-center;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; margin-right: 0; align-items: center; justify-content: center; align-self: auto; position: absolute; top: 80%; left: 60%; height: 113px; right: 45px; bottom: 0;">
-        <ui:Button text="Zurück" display-tooltip-when-elided="true" class="btn-progress-default" />
-        <ui:Button text="Weiter" display-tooltip-when-elided="true" class="btn-progress-default" />
+    <ui:VisualElement name="progressBtnContainer" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; margin-right: 0; align-items: center; justify-content: center; align-self: auto; position: absolute; top: 80%; left: 60%; height: 113px; right: 45px; bottom: 0;">
+        <ui:Button text="Zurück" display-tooltip-when-elided="true" name="backButton" class="btn-progress-default hidden" />
+        <ui:Button text="Weiter" display-tooltip-when-elided="true" name="forwardButton" class="btn-progress-default" />
     </ui:VisualElement>
 </ui:UXML>

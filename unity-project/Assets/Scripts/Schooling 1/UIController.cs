@@ -14,12 +14,17 @@ public struct TemplateContentTypePair
 public class UIController : MonoBehaviour
 {
 
-    [SerializeField] private List<Chapter> _chapters = new List<Chapter>();
-    [SerializeField] private Chapter _currentChapter;
+    [SerializeField] public List<ChapterData> chapterData = new List<ChapterData>();
+    [SerializeField] private List<Chapter> _chapters;
+    [SerializeField] private int _currentChapterIndex = 0;
+    [SerializeField] private int _currentContentIndex = -1;
 
     // *** UI ***
 
     [SerializeField] private UIDocument _uIDocument;
+
+    [SerializeField] private Button _backButton, _forwardButton;
+    [SerializeField] private VisualElement _sideBarContainer, _contentContainer;
 
     public List<TemplateContentTypePair> templatesNormal;
     public List<TemplateContentTypePair> templatesGamified;
@@ -32,26 +37,19 @@ public class UIController : MonoBehaviour
         // gets the root element of the VisualElementTree
         VisualElement root = _uIDocument.rootVisualElement;
 
-        // get chapter elements
+        // setup progress buttons
 
-        List<Button> temp_btns = root.Query<Button>("chapter-btn").ToList();
-        
-        foreach(Button btn in temp_btns)
-        {
-            Chapter temp = new Chapter(btn.text, btn, this);
+        _backButton = root.Query<Button>("backButton");
+        _backButton.clicked += OnClickBack;
 
-            btn.clicked += temp.ChapterButtonClickerd;
+        _forwardButton = root.Query<Button>("forwardButton");
+        _forwardButton.clicked += OnClickForward;
 
-            _chapters.Add(temp);
+        // setup container
 
-            if (btn.ClassListContains("btn-active"))
-            {
-                _currentChapter = temp;
-            }
-        }
-
-        Debug.Log("DEBUG: Chapters initialized");
-       
+        _sideBarContainer = root.Query<VisualElement>("sidebarContainer");
+        _contentContainer = root.Query<VisualElement>("contentContainer");
+          
     }
 
     // Update is called once per frame
@@ -60,15 +58,76 @@ public class UIController : MonoBehaviour
         
     }
 
-    public void SwitchChapter(Chapter chapter)
+   
+
+    private void OnClickBack()
     {
-        if (chapter != _currentChapter)
+
+        if (_currentContentIndex - 1 < 0) 
         {
-            _currentChapter.referenceElement.RemoveFromClassList("btn-active");
-            chapter.referenceElement.AddToClassList("btn-active");
-            _currentChapter = chapter;
+            Debug.LogWarning("Can't go back more!");
+        }
+        else
+        {
+            --_currentContentIndex;
+
+            SwitchContent(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex]);
         }
     }
+
+    private void OnClickForward()
+    {
+        if(_currentContentIndex == -1)
+        {
+            _backButton.RemoveFromClassList("hidden");
+        }
+
+        ++_currentContentIndex;
+
+        SwitchContent(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex]);
+
+        
+
+    }
+
+    private void SwitchContent(ContentData targetContent)
+    {
+        _contentContainer.Clear();
+
+        switch (targetContent.contentType)
+        {
+            case ContentType.DESCRIPTION:
+                VisualTreeAsset temp = FindAsset(templatesNormal, targetContent.contentType);
+
+                temp.CloneTree(_contentContainer);
+
+                var headingLabel = (Label) _contentContainer.Query<Label>("contentHeading");
+                var descriptionLabel = (Label) _contentContainer.Query<Label>("contentText");
+
+                headingLabel.text = targetContent.contentHeading;
+                descriptionLabel.text = targetContent.contentText;
+
+
+                break;
+            default: break;
+        }
+    }
+
+    private VisualTreeAsset FindAsset(List<TemplateContentTypePair> srcList, ContentType contentType) 
+    {
+        VisualTreeAsset returnAsset = null; 
+
+        foreach (TemplateContentTypePair pair in srcList)
+        {
+            if(pair.elementType == contentType)
+            {
+                returnAsset = pair.visualElement;
+            }
+        }
+
+        return returnAsset;
+    }
+
 
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.PackageManager;
 using System.Linq;
+using Unity.VisualScripting;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -29,6 +30,7 @@ public class ChapterData : ScriptableObject
 class ChapterDataEditor : Editor
 {
     private const int MAX_MULTICHOICE = 5;
+    private const int MAX_BUCKETS = 4;
 
     ChapterData data;
 
@@ -57,6 +59,7 @@ class ChapterDataEditor : Editor
             {
                 var element = chapterContentList.serializedProperty.GetArrayElementAtIndex(contentIndex);
 
+                var contentHeadingProp = element.FindPropertyRelative(nameof(ContentData.contentHeading));
                 var contentTextProp = element.FindPropertyRelative(nameof(ContentData.contentText));
                 var contenTypeProp = element.FindPropertyRelative(nameof(ContentData.contentType));
                 var contentChoicesProp = element.FindPropertyRelative(nameof(ContentData.contentChoices));
@@ -80,7 +83,12 @@ class ChapterDataEditor : Editor
                         case ContentType.NONE: break;
                         case ContentType.DESCRIPTION:
                         case ContentType.DESCRIPTION_IMAGE:
+
+                            EditorGUI.PropertyField(
+                                new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), contentHeadingProp, new GUIContent("Context Heading"));
                             
+                            rect.y += EditorGUIUtility.singleLineHeight;
+
                             EditorGUI.PropertyField(
                                  new Rect(rect.x, rect.y, rect.width, text_heigth), contentTextProp, new GUIContent("Content Text"));
 
@@ -148,7 +156,7 @@ class ChapterDataEditor : Editor
                                         }
                                         else
                                         {
-                                            Debug.Log("Reached Max Multiple Choice Count!");
+                                            Debug.LogWarning("Reached Max Multiple Choice Count!");
                                         }
                                     }
                                 };
@@ -252,16 +260,25 @@ class ChapterDataEditor : Editor
 
                                     onAddCallback = (ReorderableList list) =>
                                     {
-                                        list.serializedProperty.arraySize++;
-                                        var newElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
+                                        if(list.serializedProperty.arraySize < MAX_BUCKETS)
+                                        {
+                                            list.serializedProperty.arraySize++;
+                                            var newElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
 
-                                        var bucketName = newElement.FindPropertyRelative(nameof(Bucket.bucketName));
-                                        var bucketContents = newElement.FindPropertyRelative(nameof(Bucket.bucketContents));
-                                        var bucketFoldout = newElement.FindPropertyRelative(nameof(Bucket.foldout));
+                                            var bucketName = newElement.FindPropertyRelative(nameof(Bucket.bucketName));
+                                            var bucketContents = newElement.FindPropertyRelative(nameof(Bucket.bucketContents));
+                                            var bucketFoldout = newElement.FindPropertyRelative(nameof(Bucket.foldout));
 
-                                        bucketName.stringValue = "New Bucket";
-                                        bucketContents.arraySize = 0;
-                                        bucketFoldout.boolValue = false;
+                                            bucketName.stringValue = "New Bucket";
+                                            bucketContents.arraySize = 0;
+                                            bucketFoldout.boolValue = false;
+                                        }
+                                        else
+                                        {
+                                            Debug.LogWarning("Reached Maximum Buckets Count");  
+                                        }
+
+                                       
 
                                     }
 
@@ -283,6 +300,7 @@ class ChapterDataEditor : Editor
             {
                 var element = chapterContentList.serializedProperty.GetArrayElementAtIndex(index);
 
+                var contentHeadingProp = element.FindPropertyRelative(nameof(ContentData.contentHeading));
                 var contentTextProp = element.FindPropertyRelative(nameof(ContentData.contentText));
                 var contenTypeProp = element.FindPropertyRelative(nameof(ContentData.contentType));
                 var contentChoicesProp = element.FindPropertyRelative(nameof(ContentData.contentChoices));
@@ -295,6 +313,7 @@ class ChapterDataEditor : Editor
                     case ContentType.NONE: break;
                     case ContentType.DESCRIPTION:
                         otherContentHeigth += EditorGUI.GetPropertyHeight(contentTextProp);
+                        otherContentHeigth += EditorGUI.GetPropertyHeight(contentHeadingProp);
                         break;
                     case ContentType.DESCRIPTION_IMAGE:
                         otherContentHeigth += EditorGUIUtility.singleLineHeight * 6;

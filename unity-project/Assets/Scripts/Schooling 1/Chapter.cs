@@ -17,9 +17,4 @@ public class Chapter
         this.referenceElement = referenceElement;
         this._controller = controller;
     }
-
-    public void ChapterButtonClickerd()
-    {
-        _controller.SwitchChapter(this);
-    }
 }

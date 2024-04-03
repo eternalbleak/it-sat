@@ -245,10 +245,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a1ac5659107fe4ab83e38f43ea2f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uIDocument: {fileID: 0}
+  chapterData:
+  - {fileID: 11400000, guid: c55c8c594d8b3414fa566ae1f85d8b12, type: 2}
+  _currentChapterIndex: 0
+  _currentContentIndex: -1
+  _uIDocument: {fileID: 1448011755}
   templatesNormal:
-  - visualElement: {fileID: 0}
-    elementType: 0
+  - visualElement: {fileID: 9197481963319205126, guid: 6cd6f5e7b60de2f45bbfecb8cc7291c0, type: 3}
+    elementType: 1
   templatesGamified: []
 --- !u!114 &1448011755
 MonoBehaviour:

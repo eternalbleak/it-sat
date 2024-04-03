@@ -15,7 +15,10 @@ MonoBehaviour:
   title: Test Chapter
   chapterContent:
   - contentType: 1
-    contentText: eananrnawe
+    contentHeading: Test Heading
+    contentText: dadadadadatbxcerteb zheteivnjxvtwgunuwv wrwnerjwjnvjwnjenrj wrjw
+      nerjnwjnrjwnerjwjernwjernjw njwnrj wnjrntbghdbztewbhbgh bwhrbwhjbj w bwrbwhbh
+      bhbhrwbbrwbhr whbrhwr bbrwhbj bjhbrwbjrugbjvxbhe bherbhwbr.
     contentImage: {fileID: 0}
     contentChoices:
     - choiceText: arwrb
@@ -34,6 +37,7 @@ MonoBehaviour:
       bucketContents: []
       foldout: 1
   - contentType: 2
+    contentHeading: 
     contentText: eananrnawe
     contentImage: {fileID: 0}
     contentChoices:
@@ -47,16 +51,17 @@ MonoBehaviour:
       choiceIsCorrect: 0
     contentBuckets: []
   - contentType: 3
+    contentHeading: 
     contentText: eananrnawe
     contentImage: {fileID: 0}
     contentChoices:
     - choiceText: arwrb
       choiceIsCorrect: 0
-    - choiceText: t4
-      choiceIsCorrect: 0
     - choiceText: ab
       choiceIsCorrect: 1
     - choiceText: rbnata
+      choiceIsCorrect: 0
+    - choiceText: t4
       choiceIsCorrect: 0
     contentBuckets:
     - bucketName: 
@@ -66,6 +71,7 @@ MonoBehaviour:
       bucketContents: []
       foldout: 1
   - contentType: 4
+    contentHeading: 
     contentText: eananrnawe
     contentImage: {fileID: 0}
     contentChoices:

@@ -16,6 +16,7 @@ public enum ContentType
 public class ContentData
 {
     public ContentType contentType = ContentType.NONE;
+    public string contentHeading;
     [TextArea] public string contentText;
 
     public Texture contentImage;
