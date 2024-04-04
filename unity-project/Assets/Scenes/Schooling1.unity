@@ -251,9 +251,14 @@ MonoBehaviour:
   _currentContentIndex: -1
   _uIDocument: {fileID: 1448011755}
   templatesNormal:
-  - visualElement: {fileID: 9197481963319205126, guid: 6cd6f5e7b60de2f45bbfecb8cc7291c0, type: 3}
+  - visualElement: {fileID: 9197481963319205126, guid: 3177c2109ff06fe4591fcc0e121b7d70, type: 3}
     elementType: 1
+  - visualElement: {fileID: 9197481963319205126, guid: 6cd6f5e7b60de2f45bbfecb8cc7291c0, type: 3}
+    elementType: 2
+  - visualElement: {fileID: 9197481963319205126, guid: 5a9a8ef0864270148a58f081f7840723, type: 3}
+    elementType: 3
   templatesGamified: []
+  choiceTemplate: {fileID: 9197481963319205126, guid: bc007aab648459545add50cd76c5e1b4, type: 3}
 --- !u!114 &1448011755
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="descriptionContainer" style="flex-grow: 1; background-color: rgb(255, 255, 255); width: 100%; height: 100%; justify-content: flex-start; align-items: center; align-self: center;">
+        <ui:Label tabindex="-1" text="Quamquam" display-tooltip-when-elided="true" name="contentHeading" style="-unity-font-style: bold; font-size: 18px; margin-top: 30px; margin-bottom: 15px; height: 10%; -unity-text-align: middle-center; align-self: auto; align-items: auto;" />
+        <ui:GroupBox name="choicesContainer" style="width: 70%; height: 257px; align-items: center; justify-content: center; flex-wrap: nowrap; flex-direction: column; flex-basis: 65%;" />
+    </ui:VisualElement>
+</ui:UXML>

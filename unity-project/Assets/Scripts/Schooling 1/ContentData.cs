@@ -19,7 +19,7 @@ public class ContentData
     public string contentHeading;
     [TextArea] public string contentText;
 
-    public Texture contentImage;
+    public Texture2D contentImage;
 
     public List<Choice> contentChoices;
 

@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
+using System.Runtime.CompilerServices;
+using System.Linq;
+using static UnityEditor.Progress;
 
 [Serializable]
 public struct TemplateContentTypePair
 {
     public VisualTreeAsset visualElement;
     public ContentType elementType;
+}
+
+[Serializable]
+public struct ChoiceElementContainer
+{
+    public int contentIndex;
+    public List<VisualElement> choiceElements;
 }
 
 public class UIController : MonoBehaviour
@@ -26,8 +36,12 @@ public class UIController : MonoBehaviour
     [SerializeField] private Button _backButton, _forwardButton;
     [SerializeField] private VisualElement _sideBarContainer, _contentContainer;
 
+    [SerializeField] private List<ChoiceElementContainer> choiceElements;
+
     public List<TemplateContentTypePair> templatesNormal;
     public List<TemplateContentTypePair> templatesGamified;
+
+    public VisualTreeAsset choiceTemplate;
 
     // Start is called before the first frame update
     void Start()
@@ -81,6 +95,12 @@ public class UIController : MonoBehaviour
         {
             _backButton.RemoveFromClassList("hidden");
         }
+        else if(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentType == ContentType.MULTIPLE_CHOICE)
+        {
+            Debug.Log(checkChoices(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentChoices, GetChoiceElements(_currentContentIndex)));
+            return;
+        }
+
 
         ++_currentContentIndex;
 
@@ -94,21 +114,105 @@ public class UIController : MonoBehaviour
     {
         _contentContainer.Clear();
 
+        VisualTreeAsset temp = null;
+
+        Label headingLabel, descriptionLabel;
+        VisualElement imageElement, choicesContainer;
+
         switch (targetContent.contentType)
         {
             case ContentType.DESCRIPTION:
-                VisualTreeAsset temp = FindAsset(templatesNormal, targetContent.contentType);
+
+                temp = FindAsset(templatesNormal, targetContent.contentType);
 
                 temp.CloneTree(_contentContainer);
 
-                var headingLabel = (Label) _contentContainer.Query<Label>("contentHeading");
-                var descriptionLabel = (Label) _contentContainer.Query<Label>("contentText");
+                headingLabel = (Label) _contentContainer.Query<Label>("contentHeading");
+                descriptionLabel = (Label) _contentContainer.Query<Label>("contentText");
 
                 headingLabel.text = targetContent.contentHeading;
                 descriptionLabel.text = targetContent.contentText;
 
+                break;
+
+            case ContentType.DESCRIPTION_IMAGE:
+
+                temp = FindAsset(templatesNormal, targetContent.contentType);
+
+                temp.CloneTree(_contentContainer);
+
+                headingLabel = (Label)_contentContainer.Query<Label>("contentHeading");
+                descriptionLabel = (Label)_contentContainer.Query<Label>("contentText");
+                imageElement = (VisualElement)_contentContainer.Query<VisualElement>("contentImage");
+
+                headingLabel.text = targetContent.contentHeading;
+                descriptionLabel.text = targetContent.contentText;
+                imageElement.style.backgroundImage = new StyleBackground(targetContent.contentImage);
 
                 break;
+
+            case ContentType.MULTIPLE_CHOICE:
+
+                temp = FindAsset(templatesNormal, targetContent.contentType);
+
+                temp.CloneTree(_contentContainer);
+
+                headingLabel = (Label)_contentContainer.Query<Label>("contentHeading");
+                choicesContainer = (VisualElement)_contentContainer.Query<VisualElement>("choicesContainer");
+
+                headingLabel.text = targetContent.contentText;
+                choicesContainer.Clear();
+
+                // only create the multichoice layout in the first round. Otherwise the answers are always in random arrangements
+                if (!ChoicesAlreadyGenerated(_currentContentIndex))
+                {
+                    ChoiceElementContainer tempContainer = new ChoiceElementContainer();
+                    tempContainer.contentIndex = _currentContentIndex;
+                    tempContainer.choiceElements = new List<VisualElement>();
+
+                    // shuffles the contentChoices List to be different every time by Erick William (https://stackoverflow.com/questions/273313/randomize-a-listt)
+                    System.Random rand = new System.Random();
+                    List<Choice> shuffledChoices = targetContent.contentChoices.OrderBy(_ => rand.Next()).ToList();
+
+
+                    foreach (Choice choice in shuffledChoices)
+                    {
+                        choiceTemplate.CloneTree(choicesContainer);
+
+                        var currentChoiceElement = (VisualElement)choicesContainer.Query<VisualElement>("choiceContainer");
+                        currentChoiceElement.name = currentChoiceElement.name + choiceElements.Count;
+
+                        var choiceText = (Label)currentChoiceElement.Query<Label>("choiceText");
+
+                        choiceText.text = choice.choiceText;
+
+                        tempContainer.choiceElements.Add(currentChoiceElement);
+                    }
+
+                    choiceElements.Add(tempContainer);
+                    break;
+                }
+
+
+
+                foreach (VisualElement choiceElement in GetChoiceElements(_currentContentIndex))
+                {
+                    choicesContainer.Add(choiceElement);
+                }
+
+
+                break;
+
+            case ContentType.ALLOCATION:
+
+                /* what needs to be done
+                 - extract all allocation elements
+                 - drag and drop from the element holder into their buckets
+                 - check if every thing is in the right bucket
+                 
+                 */
+                throw new NotImplementedException();
+
             default: break;
         }
     }
@@ -125,7 +229,72 @@ public class UIController : MonoBehaviour
             }
         }
 
+        if(returnAsset == null)
+        {
+            Debug.LogWarning("No Template Content Pair found.");
+        }
+
         return returnAsset;
+    }
+
+    private bool ChoicesAlreadyGenerated(int index)
+    {
+        foreach (var item in choiceElements)
+        {
+            if(item.contentIndex == index)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<VisualElement> GetChoiceElements(int index)
+    {
+        foreach(var item in choiceElements)
+        {
+            if (item.contentIndex == index)
+            {
+                return item.choiceElements;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Checks if the choices checked are the correct ones
+    /// </summary>
+    /// <param name="choicesSolution">correct choices</param>
+    /// <param name="choicesToCheck">choices that need to be checked</param>
+    /// <returns></returns>
+    private bool checkChoices(List<Choice> choicesSolution, List<VisualElement> choicesToCheck)
+    {
+        // only use the checked/correct ones other can be discarded
+        var correctChoices = choicesSolution.Where(_ => _.choiceIsCorrect == true).ToList();
+        var checkedChoices = choicesToCheck.Where(_ => {
+            var toggle = (Toggle)_.Query<Toggle>("choiceToggle");
+            return toggle.value;
+        }).ToList();
+
+        // below only checks if all correct are selected, if there anymore selected the number varies from the correct one -> conversion must not be execute everytime
+        if(checkedChoices.Count != correctChoices.Count) { return false; }
+
+        // converting visualelements and choices to string for easyier comparison
+        List<string> answers = new List<string>();
+
+   
+        foreach (var answer in checkedChoices)
+        {
+            var choiceText = (Label)answer.Query<Label>("choiceText");
+            answers.Add(choiceText.text);
+        }
+
+        foreach(var solution in correctChoices)
+        {
+            if (!answers.Contains(solution.ToString())) { return false; }
+        }
+
+        return true;
     }
 
 
