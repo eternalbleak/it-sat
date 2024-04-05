@@ -14,6 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Test Chapter
   chapterContent:
+  - contentType: 4
+    contentHeading: 
+    contentText: eananrnawe
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: arwrb
+      choiceIsCorrect: 0
+    - choiceText: t4
+      choiceIsCorrect: 0
+    - choiceText: ab
+      choiceIsCorrect: 1
+    - choiceText: rbnata
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: Test Bucket 1
+      bucketContents:
+      - contentText: ab
+      - contentText: bc
+      foldout: 1
+    - bucketName: Another Text bucket
+      bucketContents:
+      - contentText: Lorem
+      - contentText: Ipsum
+      - contentText: QuamQuam
+      foldout: 1
   - contentType: 1
     contentHeading: Test Heading
     contentText: dadadadadatbxcerteb zheteivnjxvtwgunuwv wrwnerjwjnvjwnjenrj wrjw
@@ -67,20 +92,6 @@ MonoBehaviour:
       choiceIsCorrect: 1
     - choiceText: t4
       choiceIsCorrect: 0
-    - choiceText: rbnata
-      choiceIsCorrect: 0
-    contentBuckets: []
-  - contentType: 4
-    contentHeading: 
-    contentText: eananrnawe
-    contentImage: {fileID: 0}
-    contentChoices:
-    - choiceText: arwrb
-      choiceIsCorrect: 0
-    - choiceText: t4
-      choiceIsCorrect: 0
-    - choiceText: ab
-      choiceIsCorrect: 1
     - choiceText: rbnata
       choiceIsCorrect: 0
     contentBuckets: []

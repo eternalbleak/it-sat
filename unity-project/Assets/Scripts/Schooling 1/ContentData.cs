@@ -25,6 +25,15 @@ public class ContentData
 
     public List<Bucket> contentBuckets;
 
+    public List<string> provideAllBucketStrings()
+    {
+        List<string> list = new List<string>();
+
+        contentBuckets.ForEach(bucket => list.AddRange(bucket.provideBucketStrings()));
+
+        return list;
+    }
+
 }
 
 

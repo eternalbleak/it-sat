@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
-using System.Runtime.CompilerServices;
 using System.Linq;
-using static UnityEditor.Progress;
 
+/// <summary>
+/// Pairs a VisualTreeAsset to a specifc ContentType.
+/// </summary>
 [Serializable]
 public struct TemplateContentTypePair
 {
@@ -205,18 +206,27 @@ public class UIController : MonoBehaviour
 
             case ContentType.ALLOCATION:
 
-                /* what needs to be done
-                 - extract all allocation elements
-                 - drag and drop from the element holder into their buckets
-                 - check if every thing is in the right bucket
-                 
-                 */
-                throw new NotImplementedException();
+                temp = FindAsset(templatesNormal, targetContent.contentType);
+                temp.CloneTree(_contentContainer);
+
+                var contentBuckets = (VisualElement)_contentContainer.Query<VisualElement>("contentBuckets");
+
+                AllocationElementHolder holder = new AllocationElementHolder();
+                holder.Start(targetContent, contentBuckets);
+
+
+                break;
 
             default: break;
         }
     }
 
+    /// <summary>
+    /// Finds the right VSA for a given contentType within a given list.
+    /// </summary>
+    /// <param name="srcList"></param>
+    /// <param name="contentType"></param>
+    /// <returns></returns>
     private VisualTreeAsset FindAsset(List<TemplateContentTypePair> srcList, ContentType contentType) 
     {
         VisualTreeAsset returnAsset = null; 
@@ -237,6 +247,11 @@ public class UIController : MonoBehaviour
         return returnAsset;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
     private bool ChoicesAlreadyGenerated(int index)
     {
         foreach (var item in choiceElements)
@@ -249,6 +264,11 @@ public class UIController : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
     private List<VisualElement> GetChoiceElements(int index)
     {
         foreach(var item in choiceElements)

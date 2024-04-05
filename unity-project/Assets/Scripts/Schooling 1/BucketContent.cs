@@ -8,4 +8,9 @@ public class BucketContent
 {
     public string contentText;
     // images/icons
+
+    public override string ToString()
+    {
+        return contentText;
+    }
 }

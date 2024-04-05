@@ -250,6 +250,7 @@ MonoBehaviour:
   _currentChapterIndex: 0
   _currentContentIndex: -1
   _uIDocument: {fileID: 1448011755}
+  choiceElements: []
   templatesNormal:
   - visualElement: {fileID: 9197481963319205126, guid: 3177c2109ff06fe4591fcc0e121b7d70, type: 3}
     elementType: 1
@@ -257,6 +258,8 @@ MonoBehaviour:
     elementType: 2
   - visualElement: {fileID: 9197481963319205126, guid: 5a9a8ef0864270148a58f081f7840723, type: 3}
     elementType: 3
+  - visualElement: {fileID: 9197481963319205126, guid: 8b768a0698e645c4084ae71cfdb099a3, type: 3}
+    elementType: 4
   templatesGamified: []
   choiceTemplate: {fileID: 9197481963319205126, guid: bc007aab648459545add50cd76c5e1b4, type: 3}
 --- !u!114 &1448011755
