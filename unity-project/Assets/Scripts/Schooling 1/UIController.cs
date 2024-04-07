@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System;
 using System.Linq;
+using static UnityEditor.PlayerSettings;
 
 /// <summary>
 /// Pairs a VisualTreeAsset to a specifc ContentType.
@@ -38,11 +39,14 @@ public class UIController : MonoBehaviour
     [SerializeField] private VisualElement _sideBarContainer, _contentContainer;
 
     [SerializeField] private List<ChoiceElementContainer> choiceElements;
+    [SerializeField] private List<AllocationElementHolder> allocationElements = new List<AllocationElementHolder>();
 
     public List<TemplateContentTypePair> templatesNormal;
     public List<TemplateContentTypePair> templatesGamified;
 
     public VisualTreeAsset choiceTemplate;
+
+    private VisualElement ghostElement = null;
 
     // Start is called before the first frame update
     void Start()
@@ -70,7 +74,15 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(ghostElement != null)
+        {
+            if (Input.GetMouseButtonUp(0)) { ghostElement = null; return; }
+            else
+            {
+                GhostElementMove(RuntimePanelUtils.ScreenToPanel(_uIDocument.rootVisualElement.panel, Input.mousePosition));
+            }
+            
+        }
     }
 
    
@@ -101,6 +113,11 @@ public class UIController : MonoBehaviour
             Debug.Log(checkChoices(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentChoices, GetChoiceElements(_currentContentIndex)));
             return;
         }
+        else if (chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentType == ContentType.ALLOCATION)
+        {
+            allocationElements.ElementAt(_currentContentIndex).SaveContentBuckets();
+        }
+
 
 
         ++_currentContentIndex;
@@ -211,14 +228,32 @@ public class UIController : MonoBehaviour
 
                 var contentBuckets = (VisualElement)_contentContainer.Query<VisualElement>("contentBuckets");
 
-                AllocationElementHolder holder = new AllocationElementHolder();
-                holder.Start(targetContent, contentBuckets);
-
+                if (!AllocationExists(_currentContentIndex))
+                {
+                    AllocationElementHolder holder = new AllocationElementHolder();
+                    holder.Start(this, targetContent, contentBuckets.parent);
+                    holder.id = _currentContentIndex;
+                    allocationElements.Add(holder);
+                }
+                else
+                {
+                    allocationElements.ElementAt(_currentContentIndex).LoadContentBuckets(contentBuckets.parent);
+                }
 
                 break;
 
             default: break;
         }
+    }
+
+    private bool AllocationExists(int i)
+    {
+        foreach (var allocation in allocationElements)
+        {
+            if (allocation.id == i) return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -317,6 +352,17 @@ public class UIController : MonoBehaviour
         return true;
     }
 
+    public void GhostElementMove(Vector2 position)
+    {
+        position.y = Screen.height - position.y;
 
+        ghostElement.style.top = position.y - ghostElement.layout.height / 2;
+        ghostElement.style.left = position.x - ghostElement.layout.width * 2;
+    }
+
+    public void SetGhostElement(VisualElement element)
+    {
+        ghostElement = element;
+    }
 }
 

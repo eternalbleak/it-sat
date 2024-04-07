@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class AllocationElementHolder 
 {
+    public int id;
     public List<AllocationElement> elements = new List<AllocationElement>();
     public List<VisualElement> buckets = new List<VisualElement>();
 
@@ -19,6 +20,10 @@ public class AllocationElementHolder
     private AllocationElement currentElement;
     private VisualElement currentBucket;
 
+    private UIController controller;
+
+    private VisualElement bucketsHolder, possibilitiesHolder;
+
     private void Start()
     {
         templateBucket = Resources.Load("other/bucketContainer") as VisualTreeAsset;
@@ -26,15 +31,15 @@ public class AllocationElementHolder
     }
 
     // Start is called before the first frame update
-    public void Start(ContentData contentData, VisualElement bucketContainer)
+    public void Start(UIController controller, ContentData contentData, VisualElement bucketContainer)
     {
         Start();
 
-        var currentView = bucketContainer.parent;
+        this.controller = controller;
 
-        templateBucketContent.CloneTree(currentView); ;
+        templateBucketContent.CloneTree(bucketContainer);
 
-        ghostElement = (VisualElement) currentView.Query<VisualElement>("bucketContent");
+        ghostElement = (VisualElement)bucketContainer.Query<VisualElement>("bucketContent");
         ghostElement.name = "ghostElement";
         ghostElement.style.position = Position.Absolute;
         ghostElement.style.visibility = Visibility.Hidden;
@@ -44,8 +49,8 @@ public class AllocationElementHolder
 
         GenerateAllocation(contentData);
 
-        ghostElement?.RegisterCallback<PointerMoveEvent>(OnPointerMove);
-        ghostElement?.RegisterCallback<PointerUpEvent>(OnPointerUp);
+        ghostElement.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+        ghostElement.RegisterCallback<PointerUpEvent>(OnPointerUp);
 
         foreach (var element in elements)
         {
@@ -60,7 +65,7 @@ public class AllocationElementHolder
         currentBucket = element.bucket;
 
 
-        UpdateGhostElementPosition(position);
+        controller.SetGhostElement(ghostElement);
 
         // hidde original element
         // let ghostElement look like the original one
@@ -70,13 +75,18 @@ public class AllocationElementHolder
 
     void OnPointerMove(PointerMoveEvent evt)
     {
-        if (!isDragging) return;
+        //Debug.LogWarning(evt.position);
 
-        UpdateGhostElementPosition(evt.position);
+        //if (!isDragging) return;
+
+        //Debug.Log(evt.position);
+
+        //controller.SetGhostElement(ghostElement);
     }
 
     void OnPointerUp(PointerUpEvent evt) 
     {
+        if (!isDragging) return;
         // figure out in which bucket we are 
 
         // by @adammyhre
@@ -90,8 +100,8 @@ public class AllocationElementHolder
             var closesBucketContentHolder = (VisualElement) closesBucket.Query<VisualElement>("bucketContentContainer");
             closesBucketContentHolder.Add(currentElement);
 
-            var currentBucketContentHolder = (VisualElement)currentBucket.Query<VisualElement>("bucketContentContainer");
-            currentBucketContentHolder.Remove(currentElement);
+            //var currentBucketContentHolder = (VisualElement)currentBucket.Query<VisualElement>("bucketContentContainer");
+            //currentBucketContentHolder.Remove(currentElement);
           
             currentElement.bucket = closesBucket;
         }
@@ -106,12 +116,6 @@ public class AllocationElementHolder
         ghostElement.style.visibility = Visibility.Hidden;
     }
 
-    void UpdateGhostElementPosition(Vector2 pos)
-    {
-        ghostElement.style.top = pos.y - ghostElement.layout.height / 2;
-        ghostElement.style.left = pos.x - ghostElement.layout.width / 2;
-    }
-
     private void OnDestroy()
     {
         foreach (var element in elements)
@@ -123,13 +127,17 @@ public class AllocationElementHolder
     public void GenerateAllocation(ContentData contentData)
     {
         // generate buckets
-        containerElement.Clear();
+
+        var bucketsContainer = (VisualElement)containerElement.Query<VisualElement>("contentBuckets");
+        var possibilitiesContainer = (VisualElement)containerElement.Query<VisualElement>("possibilitiesBucket");
+
+        bucketsContainer.Clear();
 
         foreach (var bucket in contentData.contentBuckets)
         {
-            templateBucket.CloneTree(containerElement);
+            templateBucket.CloneTree(bucketsContainer);
 
-            var bucketContainer = (VisualElement) containerElement.Query<VisualElement>("bucketContainer");
+            var bucketContainer = (VisualElement)bucketsContainer.Query<VisualElement>("bucketContainer");
             bucketContainer.name = bucketContainer.name + buckets.Count;
 
             var bucketName = (Label) bucketContainer.Query<Label>("bucketName");
@@ -138,18 +146,48 @@ public class AllocationElementHolder
             buckets.Add(bucketContainer);
         }
 
-        var possibilitiesContainer = (VisualElement) containerElement.parent.Query<VisualElement>("possibilitiesBucket");
+        
         possibilitiesContainer.Clear();
 
         List<string> possibilities = contentData.provideAllBucketStrings();
 
         foreach (string possibilty in possibilities)
         {
-            elements.Add(new AllocationElement(templateBucketContent, possibilitiesContainer, possibilty));
+            elements.Add(new AllocationElement(possibilitiesContainer, possibilty));
         }
 
         buckets.Add(possibilitiesContainer);
         // generate possiblieties bucket
+    }
+
+    public void SaveContentBuckets()
+    {
+        bucketsHolder = (VisualElement)containerElement.Query<VisualElement>("contentBuckets");
+        possibilitiesHolder = (VisualElement)containerElement.Query<VisualElement>("possibilitiesBucket");
+
+        foreach (var element in elements)
+        {
+            element.OnStartDrag -= OnPointerDown;
+        }
+    }
+
+    public void LoadContentBuckets(VisualElement containerElement)
+    {
+        this.containerElement = containerElement;
+        var contentBuckets = (VisualElement)containerElement.Query<VisualElement>("contentBuckets");
+        var possibilitiesBuckets = (VisualElement)containerElement.Query<VisualElement>("possibilitiesBucket");
+
+        containerElement.Remove(contentBuckets);
+        containerElement.Remove(possibilitiesBuckets);
+
+        containerElement.Add(bucketsHolder);
+        containerElement.Add(possibilitiesHolder);
+
+        foreach (var element in elements)
+        {
+            element.LoadElement();
+            element.OnStartDrag += OnPointerDown;
+        }
     }
 
 
