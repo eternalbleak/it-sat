@@ -3,7 +3,7 @@
     <ui:VisualElement name="rootContainer" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: 100%; height: 100%; flex-direction: row;">
         <ui:VisualElement name="contentContainer" style="flex-grow: 1; background-color: rgb(255, 255, 255); height: 100%; width: 80%; align-items: center; justify-content: flex-start;">
             <ui:VisualElement name="dummyContent" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); width: 100%; height: 100%; align-items: center; justify-content: center;">
-                <ui:Label tabindex="-1" text="Schulung 1" display-tooltip-when-elided="true" style="-unity-font-style: bold; font-size: 20px; -unity-text-align: middle-center;" />
+                <ui:Label tabindex="-1" text="Schulung 2" display-tooltip-when-elided="true" style="-unity-font-style: bold; font-size: 20px; -unity-text-align: middle-center;" />
                 <ui:Label tabindex="-1" text="Klicke auf weiter um zu beginnen." display-tooltip-when-elided="true" style="-unity-font-style: normal; font-size: 16px; -unity-text-align: middle-center;" />
             </ui:VisualElement>
         </ui:VisualElement>
@@ -12,4 +12,5 @@
         <ui:Button text="Zurück" display-tooltip-when-elided="true" name="backButton" class="btn-progress-default hidden" />
         <ui:Button text="Weiter" display-tooltip-when-elided="true" name="forwardButton" class="btn-progress-default" />
     </ui:VisualElement>
+    <ui:ProgressBar name="progressBar" style="position: absolute; width: 80%; top: 13%; align-self: center;" />
 </ui:UXML>

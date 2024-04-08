@@ -103,7 +103,7 @@ class ChapterDataEditor : Editor
                         case ContentType.MULTIPLE_CHOICE: 
                             
                             EditorGUI.PropertyField(
-                                 new Rect(rect.x, rect.y, rect.width, text_heigth), contentTextProp, new GUIContent("Question Text"));
+                                 new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), contentHeadingProp, new GUIContent("Question Text"));
 
                             //second list that holds multiple choice
                             ReorderableList multipleChoiceList;
@@ -170,6 +170,9 @@ class ChapterDataEditor : Editor
                             break;
 
                         case ContentType.ALLOCATION:
+
+                            EditorGUI.PropertyField(
+                                new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), contentHeadingProp, new GUIContent("Question Text"));
 
                             //buckets list
                             ReorderableList bucketList;
@@ -362,6 +365,8 @@ class ChapterDataEditor : Editor
 
     private float GetMultipleChoiceHeight(SerializedProperty multichoice)
     {
+        if (multichoice == null) { return EditorGUIUtility.singleLineHeight * 2f; }
+
         var height = EditorGUIUtility.singleLineHeight;
 
         if (multichoice.isArray) 

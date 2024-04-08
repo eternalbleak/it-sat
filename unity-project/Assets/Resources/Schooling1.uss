@@ -184,3 +184,11 @@
     margin-top: 9px;
     margin-bottom: 9px;
 }
+
+.correct {
+    background-color: rgb(0, 186, 0);
+}
+
+.false {
+    background-color: rgb(221, 0, 0);
+}

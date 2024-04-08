@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/Selector.uss?fileID=7433441132597879392&amp;guid=15e38ebc01c962e488f073c7676f5dc3&amp;type=3#Selector" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgb(255, 255, 255); align-items: center; justify-content: center; padding-left: 41px; padding-right: 41px; padding-top: 41px; padding-bottom: 41px; height: auto;">
+        <ui:Label tabindex="-1" text="Schulungsauswahl" display-tooltip-when-elided="true" style="height: auto; -unity-font-style: bold; font-size: 19px; -unity-text-align: upper-center;" />
+        <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; width: 100%; align-items: center; justify-content: center; height: auto;">
+            <ui:Button text="Schulung 1" display-tooltip-when-elided="true" name="schooling1" class="schooling-btn" />
+            <ui:Button text="Schulung 2" display-tooltip-when-elided="true" name="schooling2" class="schooling-btn" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

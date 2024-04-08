@@ -245,9 +245,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a1ac5659107fe4ab83e38f43ea2f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGamified: 0
+  isGamified: 1
   chapterData:
-  - {fileID: 11400000, guid: 81c756c7e5b433848ad96f269a029705, type: 2}
+  - {fileID: 11400000, guid: 3f524cab50519df4cbab6a6f7b285956, type: 2}
   _currentChapterIndex: 0
   _currentContentIndex: -1
   _uIDocument: {fileID: 1448011755}
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: fc8511f8ac112c948b96c0b0262a89f8, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: ae2fcf9b2822b0446b4fc85fec9efbf5, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 5c6d6d4c938766542980a06b7bcb8d14, type: 3}
   m_SortingOrder: 0
 --- !u!4 &1448011756
 Transform:

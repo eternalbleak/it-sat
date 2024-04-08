@@ -14,7 +14,7 @@ public class AllocationElementHolder
     private List<Bucket> bucketData;
     private VisualElement containerElement;
 
-    protected static VisualElement ghostElement;
+    protected static Label ghostElement;
 
     private bool isDragging;
     private AllocationElement currentElement;
@@ -37,25 +37,36 @@ public class AllocationElementHolder
 
         this.controller = controller;
 
-        templateBucketContent.CloneTree(bucketContainer);
-
-        ghostElement = (VisualElement)bucketContainer.Query<VisualElement>("bucketContent");
-        ghostElement.name = "ghostElement";
-        ghostElement.style.position = Position.Absolute;
-        ghostElement.style.visibility = Visibility.Hidden;
+        
 
         bucketData = contentData.contentBuckets;
         containerElement = bucketContainer;
 
         GenerateAllocation(contentData);
 
-        ghostElement.RegisterCallback<PointerMoveEvent>(OnPointerMove);
-        ghostElement.RegisterCallback<PointerUpEvent>(OnPointerUp);
+        ghostElement = SpawnGhostElement();
 
         foreach (var element in elements)
         {
             element.OnStartDrag += OnPointerDown;
         }
+    }
+
+    Label SpawnGhostElement()
+    {
+        var root = controller.GetUIDocument().rootVisualElement;
+
+        templateBucketContent.CloneTree(root);
+
+        var ghostElement = (Label)root.Query<Label>("bucketContent");
+        ghostElement.name = "ghostElement";
+        ghostElement.style.position = Position.Absolute;
+        ghostElement.style.visibility = Visibility.Hidden;
+        
+        ghostElement.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+        ghostElement.RegisterCallback<PointerUpEvent>(OnPointerUp);
+
+        return ghostElement;
     }
 
     void OnPointerDown(Vector2 position, AllocationElement element)
@@ -64,6 +75,7 @@ public class AllocationElementHolder
         currentElement = element;
         currentBucket = element.bucket;
 
+        ghostElement.text = element.text;
 
         controller.SetGhostElement(ghostElement);
 
@@ -98,7 +110,29 @@ public class AllocationElementHolder
         if(closesBucket != null && closesBucket != currentBucket)
         {
             var closesBucketContentHolder = (VisualElement) closesBucket.Query<VisualElement>("bucketContentContainer");
-            closesBucketContentHolder.Add(currentElement);
+
+            if(closesBucketContentHolder != null)
+            {
+                closesBucketContentHolder.Add(currentElement);
+
+                var bucket = GetBucketFromVisualElement(closesBucket);
+
+                if(bucket != null && bucket.BucketContainsContent(currentElement.text))
+                {
+                    currentElement.SetElementCorrect();
+                }
+
+                else
+                {
+                    currentElement.AddToClassList("false");
+                }
+            }
+
+            else{
+                closesBucket.Add(currentElement);
+            }
+
+
 
             //var currentBucketContentHolder = (VisualElement)currentBucket.Query<VisualElement>("bucketContentContainer");
             //currentBucketContentHolder.Remove(currentElement);
@@ -188,8 +222,21 @@ public class AllocationElementHolder
             element.LoadElement();
             element.OnStartDrag += OnPointerDown;
         }
+
+        ghostElement = SpawnGhostElement();
     }
 
+    public Bucket GetBucketFromVisualElement(VisualElement element)
+    {
+        var bucketName = (Label)element.Query<Label>("bucketName");
+
+        foreach (var item in bucketData)
+        {
+            if(item.bucketName == bucketName.text) { return item; }
+        }
+
+        return null;
+    }
 
     public List<string> GetBucketSelection(VisualElement bucket)
     {
@@ -218,13 +265,25 @@ public class AllocationElementHolder
         return true;
     }
 
-    public bool CheckAllocation(List<VisualElement> bucketsElements, List<Bucket> bucketDatas)
+    public bool CheckAllocation()
     {
-        for (int i = 0; i < bucketData.Count; i++)
+        return CheckAllocation(buckets, bucketData);
+    }
+
+    private bool CheckAllocation(List<VisualElement> bucketsElements, List<Bucket> bucketDatas)
+    {
+        for (int i = 0; i < bucketData.Count - 1; i++)
         {
             if (!CheckBucket(bucketDatas[i].provideBucketStrings(), GetBucketSelection(bucketsElements[i]))) return false;
         }
 
+        return true;
+    }
+
+    public bool AllPossibilitiesSorted()
+    {
+        if (buckets.ElementAt(buckets.Count - 1).childCount > 0) return false;
+        
         return true;
     }
 

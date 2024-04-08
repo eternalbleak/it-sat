@@ -1,0 +1,260 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d2ac101aa022144da285163b6e14cfe, type: 3}
+  m_Name: Schooling 1
+  m_EditorClassIdentifier: 
+  title: 
+  chapterContent:
+  - contentType: 1
+    contentHeading: Informationen
+    contentText: "Informationen sind Kundendaten, Finanzberichte, Firmengeheimnisse,
+      usw. Informationen m\xFCssen aufgrund von regulatorischen Anforderungen und
+      unternehmerischen Eigeninteresse gesch\xFCtzt werden. "
+    contentImage: {fileID: 0}
+    contentChoices: []
+    contentBuckets: []
+  - contentType: 1
+    contentHeading: Vertraulichkeit von Informationen
+    contentText: tba
+    contentImage: {fileID: 0}
+    contentChoices: []
+    contentBuckets: []
+  - contentType: 4
+    contentHeading: 'Vertraulichkeit von Informationen: Ordne die Arten von Informationen
+      ihren Vertraulichkeitsklassen zu.'
+    contentText: tba
+    contentImage: {fileID: 0}
+    contentChoices: []
+    contentBuckets:
+    - bucketName: "\xD6ffentlich"
+      bucketContents:
+      - contentText: Pressemitteilungen
+      - contentText: Werbematerialien
+      foldout: 1
+    - bucketName: Intern
+      bucketContents:
+      - contentText: Telefonliste
+      - contentText: Organigramm
+      foldout: 1
+    - bucketName: Vertraulich
+      bucketContents:
+      - contentText: Kundendaten
+      - contentText: "Passw\xF6rter"
+      - contentText: Entwicklungsdaten
+      foldout: 1
+  - contentType: 1
+    contentHeading: Phishing
+    contentText: "Durch eine Phishingnachricht versuchen Angreifer einem Opfer Informationen
+      zu entlocken. So k\xF6nnen vertrauliche Informationen verloren gehen. Oftmals
+      weren Emails mit Schadhaften Links verschickt."
+    contentImage: {fileID: 0}
+    contentChoices: []
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+  - contentType: 3
+    contentHeading: Was ist Phishing?
+    contentText: 
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: "Eine Bezeichnung f\xFCr eine Angriffsvektor."
+      choiceIsCorrect: 1
+    - choiceText: "Die Bezeichnung f\xFCr Hochseefischfang mit Angeln."
+      choiceIsCorrect: 0
+    - choiceText: Das verschicken von Emails mit schadhaften Links.
+      choiceIsCorrect: 1
+    - choiceText: "Der Name f\xFCr das Brutverhalten von Seehasen."
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+  - contentType: 2
+    contentHeading: Was zeichnet eine Phishingmail aus?
+    contentText: "Phishingmails fordern oftmals zum schnellen Handeln aufgrund einer
+      bestimmten, akuten Situation auf. Der Absender ist meist eine Unbekannte Person,
+      welche sich als Vertrauensw\xFCrdige Quelle ausgibt."
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: "Eine Bezeichnung f\xFCr eine Angriffsvektor."
+      choiceIsCorrect: 1
+    - choiceText: "Die Bezeichnung f\xFCr Hochseefischfang mit Angeln."
+      choiceIsCorrect: 0
+    - choiceText: Das verschicken von Emails mit schadhaften Links.
+      choiceIsCorrect: 1
+    - choiceText: "Der Name f\xFCr das Brutverhalten von Seehasen."
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+  - contentType: 1
+    contentHeading: Phishingarten
+    contentText: 
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: "Eine Bezeichnung f\xFCr eine Angriffsvektor."
+      choiceIsCorrect: 1
+    - choiceText: "Die Bezeichnung f\xFCr Hochseefischfang mit Angeln."
+      choiceIsCorrect: 0
+    - choiceText: Das verschicken von Emails mit schadhaften Links.
+      choiceIsCorrect: 1
+    - choiceText: "Der Name f\xFCr das Brutverhalten von Seehasen."
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+  - contentType: 3
+    contentHeading: Was ist Spearfishing?
+    contentText: tba
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: Stark personalisiertes Phishing.
+      choiceIsCorrect: 1
+    - choiceText: "Angreifer verf\xFCgen \xFCber tiefgreifendes Hintergrundwissen."
+      choiceIsCorrect: 1
+    - choiceText: "Phishing welches gezielt an F\xFChrungspersonen gerichtet  ist."
+      choiceIsCorrect: 0
+    - choiceText: "Ein anderer Begriff f\xFCr Phishing per Kurznachricht.."
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+  - contentType: 3
+    contentHeading: Was ist Smishing?
+    contentText: tba
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: Phishing per Kurznachricht.
+      choiceIsCorrect: 1
+    - choiceText: "Bezeichnung f\xFCr da Stehlen von Telefonnummern."
+      choiceIsCorrect: 0
+    - choiceText: 
+      choiceIsCorrect: 1
+    - choiceText: 
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+  - contentType: 3
+    contentHeading: Was ist Vishing?
+    contentText: "Ruhig bleiben und hinterfragen: Wieso habe ich diese Mail/Nachrichte
+      gerade bekommen? Macht das Sinn? Absender \xFCberpr\xFCfen. Ist die Emailadresse
+      korrekt? Absenderemail und Link sind oft sehr kryptisch."
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: Eine Pishingkategorie
+      choiceIsCorrect: 1
+    - choiceText: Voice-Phishing.
+      choiceIsCorrect: 1
+    - choiceText: Video-Phishing.
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+  - contentType: 1
+    contentHeading: "Wie sch\xFCtze ich mich vor Phishing?"
+    contentText: "Ruhig bleiben und hinterfragen: Wieso habe ich diese Mail/Nachrichte
+      gerade bekommen? Macht das Sinn? Absender \xFCberpr\xFCfen. Ist die Emailadresse
+      korrekt? Absenderemail und Link sind oft sehr kryptisch."
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: "Eine Bezeichnung f\xFCr eine Angriffsvektor."
+      choiceIsCorrect: 1
+    - choiceText: "Die Bezeichnung f\xFCr Hochseefischfang mit Angeln."
+      choiceIsCorrect: 0
+    - choiceText: Das verschicken von Emails mit schadhaften Links.
+      choiceIsCorrect: 1
+    - choiceText: "Der Name f\xFCr das Brutverhalten von Seehasen."
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+  - contentType: 3
+    contentHeading: "Was sind die Pr\xFCfschritte f\xFCr Email-Phishing?"
+    contentText: "Ruhig bleiben und hinterfragen: Wieso habe ich diese Mail/Nachrichte
+      gerade bekommen? Macht das Sinn? Absender \xFCberpr\xFCfen. Ist die Emailadresse
+      korrekt? Absenderemail und Link sind oft sehr kryptisch."
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: "Email gar nicht erst \xF6ffnen."
+      choiceIsCorrect: 0
+    - choiceText: "Email-Adresse \xFCberpr\xFCfen."
+      choiceIsCorrect: 1
+    - choiceText: "Zieladresse von Links \xFCberpr\xFCfen"
+      choiceIsCorrect: 1
+    - choiceText: Eingehende Emails als Spam makieren.
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0

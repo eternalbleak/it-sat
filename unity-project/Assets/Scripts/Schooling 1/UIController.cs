@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 using System;
 using System.Linq;
 using static UnityEditor.PlayerSettings;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Pairs a VisualTreeAsset to a specifc ContentType.
@@ -26,27 +28,32 @@ public struct ChoiceElementContainer
 public class UIController : MonoBehaviour
 {
 
+    public bool isGamified = false;
+
     [SerializeField] public List<ChapterData> chapterData = new List<ChapterData>();
     [SerializeField] private List<Chapter> _chapters;
     [SerializeField] private int _currentChapterIndex = 0;
     [SerializeField] private int _currentContentIndex = -1;
-
+    private int _allocationIndex = -1;
     // *** UI ***
 
     [SerializeField] private UIDocument _uIDocument;
 
     [SerializeField] private Button _backButton, _forwardButton;
+    [SerializeField] private ProgressBar _progressBar;
     [SerializeField] private VisualElement _sideBarContainer, _contentContainer;
 
-    [SerializeField] private List<ChoiceElementContainer> choiceElements;
+    [SerializeField] private List<ChoiceElementContainer> choiceElements = new List<ChoiceElementContainer>();
     [SerializeField] private List<AllocationElementHolder> allocationElements = new List<AllocationElementHolder>();
 
     public List<TemplateContentTypePair> templatesNormal;
     public List<TemplateContentTypePair> templatesGamified;
 
-    public VisualTreeAsset choiceTemplate;
+    public VisualTreeAsset choiceTemplate, schoolingFinish, chapterFinishs;
 
     private VisualElement ghostElement = null;
+
+    public UIDocument GetUIDocument() { return _uIDocument; }
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +75,13 @@ public class UIController : MonoBehaviour
 
         _sideBarContainer = root.Query<VisualElement>("sidebarContainer");
         _contentContainer = root.Query<VisualElement>("contentContainer");
+
+        if (isGamified)
+        {
+            _progressBar = root.Query<ProgressBar>("progressBar");
+            _progressBar.highValue = chapterData[_currentChapterIndex].chapterContent.Count + 1;
+            _progressBar.AddToClassList("hidden");
+        }
           
     }
 
@@ -80,8 +94,24 @@ public class UIController : MonoBehaviour
             else
             {
                 GhostElementMove(RuntimePanelUtils.ScreenToPanel(_uIDocument.rootVisualElement.panel, Input.mousePosition));
+            } 
+        }
+
+        if (_currentContentIndex < 0) return;
+        if(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentType == ContentType.ALLOCATION)
+        {
+            if (!allocationElements.ElementAt(_allocationIndex).AllPossibilitiesSorted())
+            {
+                _forwardButton.SetEnabled(false);
             }
-            
+            else
+            {
+                _forwardButton.SetEnabled(true);
+            }
+        }
+        else
+        {
+            _forwardButton.SetEnabled(true);
         }
     }
 
@@ -96,6 +126,11 @@ public class UIController : MonoBehaviour
         }
         else
         {
+            if (chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentType == ContentType.ALLOCATION)
+            {
+                --_allocationIndex;
+            }
+
             --_currentContentIndex;
 
             SwitchContent(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex]);
@@ -104,27 +139,98 @@ public class UIController : MonoBehaviour
 
     private void OnClickForward()
     {
-        if(_currentContentIndex == -1)
+        if (_currentContentIndex == -1)
         {
             _backButton.RemoveFromClassList("hidden");
+            if (isGamified)
+            {
+                _progressBar.RemoveFromClassList("hidden");
+            }
+            
         }
-        else if(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentType == ContentType.MULTIPLE_CHOICE)
+        else if (chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentType == ContentType.MULTIPLE_CHOICE)
         {
-            Debug.Log(checkChoices(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentChoices, GetChoiceElements(_currentContentIndex)));
-            return;
+            if (!checkChoices(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentChoices, GetChoiceElements(_currentContentIndex))) {
+                //display message
+                return;
+            }
+
+
         }
         else if (chapterData[_currentChapterIndex].chapterContent[_currentContentIndex].contentType == ContentType.ALLOCATION)
         {
-            allocationElements.ElementAt(_currentContentIndex).SaveContentBuckets();
+
+            if (!allocationElements.ElementAt(_allocationIndex).CheckAllocation())
+            {
+                Debug.Log("False");
+                //display message
+                return;
+            }
+
+            allocationElements.ElementAt(_allocationIndex).SaveContentBuckets();
         }
 
+        if (chapterData[_currentChapterIndex].chapterContent.Count > _currentContentIndex + 1 &&
+            chapterData[_currentChapterIndex].chapterContent[_currentContentIndex + 1].contentType == ContentType.ALLOCATION)
+        {
+            ++_allocationIndex;
+        }
 
+        if(_currentContentIndex == chapterData[_currentChapterIndex].chapterContent.Count - 1)
+        {
+            // last one
+            if (isGamified)
+            {
+                _progressBar.value = _currentContentIndex + 2;
+            }
+
+            if (_currentChapterIndex == chapterData.Count - 1)
+            {
+                // last one
+                
+                // end schooling :D
+                FinishSchooling();
+                return;
+            }
+
+            
+            FinishChapter();
+            return;
+        }
 
         ++_currentContentIndex;
+
+        if (isGamified && _progressBar.value < _currentContentIndex + 1)
+        {
+            _progressBar.value = _currentContentIndex + 1;
+        }
 
         SwitchContent(chapterData[_currentChapterIndex].chapterContent[_currentContentIndex]);
 
         
+
+    }
+
+    private void OnClickFinish()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    private void FinishChapter()
+    {
+
+    }
+
+    private void FinishSchooling()
+    {
+        _contentContainer.Clear();
+
+        schoolingFinish.CloneTree(_contentContainer);
+
+        _forwardButton.clicked -= OnClickForward;
+        _forwardButton.clicked += OnClickFinish;
+
+        _backButton.AddToClassList("hidden");
 
     }
 
@@ -178,7 +284,7 @@ public class UIController : MonoBehaviour
                 headingLabel = (Label)_contentContainer.Query<Label>("contentHeading");
                 choicesContainer = (VisualElement)_contentContainer.Query<VisualElement>("choicesContainer");
 
-                headingLabel.text = targetContent.contentText;
+                headingLabel.text = targetContent.contentHeading;
                 choicesContainer.Clear();
 
                 // only create the multichoice layout in the first round. Otherwise the answers are always in random arrangements
@@ -227,17 +333,20 @@ public class UIController : MonoBehaviour
                 temp.CloneTree(_contentContainer);
 
                 var contentBuckets = (VisualElement)_contentContainer.Query<VisualElement>("contentBuckets");
+                var questionLabel = (Label)_contentContainer.Query<Label>("contentHeading");
 
-                if (!AllocationExists(_currentContentIndex))
+                questionLabel.text = targetContent.contentHeading;
+
+                if (!AllocationExists(_allocationIndex))
                 {
                     AllocationElementHolder holder = new AllocationElementHolder();
                     holder.Start(this, targetContent, contentBuckets.parent);
-                    holder.id = _currentContentIndex;
+                    holder.id = _allocationIndex;
                     allocationElements.Add(holder);
                 }
                 else
                 {
-                    allocationElements.ElementAt(_currentContentIndex).LoadContentBuckets(contentBuckets.parent);
+                    allocationElements.ElementAt(_allocationIndex).LoadContentBuckets(contentBuckets.parent);
                 }
 
                 break;
@@ -354,10 +463,12 @@ public class UIController : MonoBehaviour
 
     public void GhostElementMove(Vector2 position)
     {
+        //Debug.Log(position.x + " : " + ghostElement.style.left);
+
         position.y = Screen.height - position.y;
 
         ghostElement.style.top = position.y - ghostElement.layout.height / 2;
-        ghostElement.style.left = position.x - ghostElement.layout.width * 2;
+        ghostElement.style.left = position.x - ghostElement.layout.width / 2;
     }
 
     public void SetGhostElement(VisualElement element)
