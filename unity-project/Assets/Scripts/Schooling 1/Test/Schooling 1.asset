@@ -24,7 +24,9 @@ MonoBehaviour:
     contentBuckets: []
   - contentType: 1
     contentHeading: Vertraulichkeit von Informationen
-    contentText: tba
+    contentText: "Informationen haben eine unterschiedliche Wertigkeit. Manche Informationen
+      sind nur f\xFCr einen bestimmten Personenkreis bestimmt. Daher gibt es eine
+      Vertraulichkeits Kategorisierung. "
     contentImage: {fileID: 0}
     contentChoices: []
     contentBuckets: []
@@ -51,23 +53,6 @@ MonoBehaviour:
       - contentText: "Passw\xF6rter"
       - contentText: Entwicklungsdaten
       foldout: 1
-  - contentType: 1
-    contentHeading: Phishing
-    contentText: "Durch eine Phishingnachricht versuchen Angreifer einem Opfer Informationen
-      zu entlocken. So k\xF6nnen vertrauliche Informationen verloren gehen. Oftmals
-      weren Emails mit Schadhaften Links verschickt."
-    contentImage: {fileID: 0}
-    contentChoices: []
-    contentBuckets:
-    - bucketName: New Bucket
-      bucketContents: []
-      foldout: 0
-    - bucketName: New Bucket
-      bucketContents: []
-      foldout: 0
-    - bucketName: New Bucket
-      bucketContents: []
-      foldout: 0
   - contentType: 3
     contentHeading: Was ist Phishing?
     contentText: 
@@ -91,12 +76,35 @@ MonoBehaviour:
     - bucketName: New Bucket
       bucketContents: []
       foldout: 0
+  - contentType: 3
+    contentHeading: Welche Gefahren zeichnet eine Phishing-Mail aus?
+    contentText: "Ruhig bleiben und hinterfragen: Wieso habe ich diese Mail/Nachrichte
+      gerade bekommen? Macht das Sinn? Absender \xFCberpr\xFCfen. Ist die Emailadresse
+      korrekt? Absenderemail und Link sind oft sehr kryptisch."
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: "Sie wirkt t\xE4uschend echt und vertrauensw\xFCrdig."
+      choiceIsCorrect: 1
+    - choiceText: Von Phishing-Mails gehen keine Gefahren aus.
+      choiceIsCorrect: 0
+    - choiceText: "Es k\xF6nnten Informationen an unbekannte Dritte verloren gehene."
+      choiceIsCorrect: 1
+    contentBuckets:
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
+    - bucketName: New Bucket
+      bucketContents: []
+      foldout: 0
   - contentType: 2
     contentHeading: Was zeichnet eine Phishingmail aus?
     contentText: "Phishingmails fordern oftmals zum schnellen Handeln aufgrund einer
       bestimmten, akuten Situation auf. Der Absender ist meist eine Unbekannte Person,
       welche sich als Vertrauensw\xFCrdige Quelle ausgibt."
-    contentImage: {fileID: 0}
+    contentImage: {fileID: 2800000, guid: 6bbc8575b08b44e43afd31492031ca2c, type: 3}
     contentChoices:
     - choiceText: "Eine Bezeichnung f\xFCr eine Angriffsvektor."
       choiceIsCorrect: 1
@@ -118,7 +126,8 @@ MonoBehaviour:
       foldout: 0
   - contentType: 1
     contentHeading: Phishingarten
-    contentText: 
+    contentText: Es gibt verschiedene Arten von Phishing. Dieses werden im folgenden
+      betrachtet.
     contentImage: {fileID: 0}
     contentChoices:
     - choiceText: "Eine Bezeichnung f\xFCr eine Angriffsvektor."
@@ -171,9 +180,7 @@ MonoBehaviour:
       choiceIsCorrect: 1
     - choiceText: "Bezeichnung f\xFCr da Stehlen von Telefonnummern."
       choiceIsCorrect: 0
-    - choiceText: 
-      choiceIsCorrect: 1
-    - choiceText: 
+    - choiceText: Malware welche Kurznachrichten verschickt
       choiceIsCorrect: 0
     contentBuckets:
     - bucketName: New Bucket

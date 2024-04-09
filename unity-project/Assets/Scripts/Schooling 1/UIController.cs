@@ -1,12 +1,9 @@
- using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UIElements;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using static UnityEditor.PlayerSettings;
-using UnityEngine.AI;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// Pairs a VisualTreeAsset to a specifc ContentType.

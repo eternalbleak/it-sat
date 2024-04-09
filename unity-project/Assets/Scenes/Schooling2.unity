@@ -263,7 +263,7 @@ MonoBehaviour:
     elementType: 4
   templatesGamified: []
   choiceTemplate: {fileID: 9197481963319205126, guid: 60ac48b6320a60544936b47f6c780606, type: 3}
-  schoolingFinish: {fileID: 9197481963319205126, guid: 1140bb6371c626e42b8b93ea968a4424, type: 3}
+  schoolingFinish: {fileID: 9197481963319205126, guid: 345bd1a1931c9a443a51586fe13774f5, type: 3}
   chapterFinishs: {fileID: 0}
 --- !u!114 &1448011755
 MonoBehaviour:

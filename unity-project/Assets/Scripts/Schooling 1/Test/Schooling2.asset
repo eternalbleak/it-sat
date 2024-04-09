@@ -15,11 +15,35 @@ MonoBehaviour:
   title: 
   chapterContent:
   - contentType: 1
-    contentHeading: fafadadadac
-    contentText: 
+    contentHeading: "Zun\xE4chst erst einmal die Basics!"
+    contentText: "Im Ersten Teil kl\xE4ren wir was Informationen \xFCberhaupt sind
+      und vorallem warum sie wichtig sind. Dann schauen wir uns an was Phishing ist
+      und wie du dich davor sch\xFCtzen kannst. "
     contentImage: {fileID: 0}
     contentChoices: []
     contentBuckets: []
+  - contentType: 3
+    contentHeading: "Was sind \xFCberhaupt Informationen."
+    contentText: 
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: Informationen sind nur Papierdokumente und Akten.
+      choiceIsCorrect: 0
+    - choiceText: Informationen bezeichnen ein breites Spektrum an Daten
+      choiceIsCorrect: 1
+    - choiceText: Nur Daten, die auf einem Computer gespeichert werden.
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: Phishing
+      bucketContents:
+      - contentText: Dringendes Anliegen eines unbekannten Kollegen.
+      - contentText: Security Abteilung stellt auf deinem Computer ein Virus fest.
+      - contentText: Dein Unternehmen teilt eine Datei mit dir.
+      foldout: 1
+    - bucketName: Kein Phishing
+      bucketContents:
+      - contentText: "Nachfrage eines Kollegen zu den Meeting n\xE4chsten Montag."
+      foldout: 1
   - contentType: 3
     contentHeading: "Warum sind Informationen eines Unternehmens sch\xFCtzenswert?"
     contentText: 
@@ -31,24 +55,192 @@ MonoBehaviour:
       choiceIsCorrect: 0
     - choiceText: Vermeidung regulatorischer Strafen.
       choiceIsCorrect: 1
-    - choiceText: afa
-      choiceIsCorrect: 1
-    contentBuckets: []
-  - contentType: 3
-    contentHeading: 
-    contentText: 
-    contentImage: {fileID: 0}
-    contentChoices: []
     contentBuckets: []
   - contentType: 4
-    contentHeading: Test
+    contentHeading: Welche dieser beispielhaften Informationstypen haben welchen
+      Vertraulichkeitsgrad?
     contentText: 
     contentImage: {fileID: 0}
     contentChoices: []
     contentBuckets:
-    - bucketName: New Bucket
-      bucketContents: []
+    - bucketName: "\xD6ffentlich"
+      bucketContents:
+      - contentText: Pressemitteilungen
+      - contentText: Werbematerialien
       foldout: 0
-    - bucketName: New Bucket
-      bucketContents: []
+    - bucketName: Intern
+      bucketContents:
+      - contentText: Telefonliste
+      - contentText: Organigramm
+      foldout: 0
+    - bucketName: Vertraulich
+      bucketContents:
+      - contentText: Kundendaten
+      - contentText: "Passw\xF6rter"
+      - contentText: Entwicklungsdaten
+      foldout: 0
+  - contentType: 1
+    contentHeading: Super! Der erste Teil ist geschaft!
+    contentText: "Bevor es weiter geht einmal eine kleine Zusammefassung: Informationen
+      sind Daten aller Art und manche von ihnen sehr wertvoll und damit sch\xFCtzenswert.
+      Nur du, der mit ihnen arbeitet, kann diese Informationen sch\xFCtzen. Daher
+      denk immer dran, wem du welche Informationen zur Verf\xFCgung stellst. Nun
+      geht es weiter mit Phishing!"
+    contentImage: {fileID: 0}
+    contentChoices: []
+    contentBuckets:
+    - bucketName: Phishing
+      bucketContents:
+      - contentText: Dringendes Anliegen eines unbekannten Kollegen.
+      - contentText: Security Abteilung stellt auf deinem Computer ein Virus fest.
+      - contentText: Dein Unternehmen teilt eine Datei mit dir.
+      foldout: 0
+    - bucketName: Kein Phishing
+      bucketContents:
+      - contentText: "Nachfrage eines Kollegen zu den Meeting n\xE4chsten Montag."
+      foldout: 0
+  - contentType: 3
+    contentHeading: Was ist Phishing?
+    contentText: 
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: Eine spezielle Art zu angeln.
+      choiceIsCorrect: 0
+    - choiceText: Ein Cyberangriff, welcher auf unvorsichtiges Verhalten abzieht.
+      choiceIsCorrect: 1
+    - choiceText: "Die Pr\xE4vention eines Cyberangriffes."
+      choiceIsCorrect: 0
+    contentBuckets: []
+  - contentType: 4
+    contentHeading: Ordne den Phishingarten die Aussagen zu.
+    contentText: 
+    contentImage: {fileID: 0}
+    contentChoices: []
+    contentBuckets:
+    - bucketName: Phishing
+      bucketContents:
+      - contentText: Dringendes Anliegen eines unbekannten Kollegen.
+      - contentText: Ein Virus wurde auf deinem PC festgestellt.
+      - contentText: Dein Unternehmen teilt eine Datei mit dir.
+      foldout: 0
+    - bucketName: Kein Phishing
+      bucketContents:
+      - contentText: "Nachfrage eines Kollegen zum n\xE4chsten Meeting."
+      - contentText: Rundmail des Vorstandes.
+      foldout: 0
+  - contentType: 3
+    contentHeading: ' Was ist Spearphishing?'
+    contentText: 
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: Stark personalisiertes Phishing.
+      choiceIsCorrect: 1
+    - choiceText: "Angreifer verf\xFCgen \xFCber tiefgreifendes Hintergrundwissen."
+      choiceIsCorrect: 1
+    - choiceText: "Ein anderer Begriff f\xFCr Phishing per Kurznachricht.."
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: Phishing
+      bucketContents:
+      - contentText: Dringendes Anliegen eines unbekannten Kollegen.
+      - contentText: Security Abteilung stellt auf deinem Computer ein Virus fest.
+      - contentText: Dein Unternehmen teilt eine Datei mit dir.
+      foldout: 0
+    - bucketName: Kein Phishing
+      bucketContents:
+      - contentText: "Nachfrage eines Kollegen zu den Meeting n\xE4chsten Montag."
+      foldout: 0
+  - contentType: 3
+    contentHeading: Was ist Smishing?
+    contentText: 
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: Phishing per Kurznachricht.
+      choiceIsCorrect: 1
+    - choiceText: Stark personalisiertes Phishing.
+      choiceIsCorrect: 0
+    - choiceText: Voice-Phishing.
+      choiceIsCorrect: 0
+    - choiceText: Video-Phishing.
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: Phishing
+      bucketContents:
+      - contentText: Dringendes Anliegen eines unbekannten Kollegen.
+      - contentText: Security Abteilung stellt auf deinem Computer ein Virus fest.
+      - contentText: Dein Unternehmen teilt eine Datei mit dir.
+      foldout: 0
+    - bucketName: Kein Phishing
+      bucketContents:
+      - contentText: "Nachfrage eines Kollegen zu den Meeting n\xE4chsten Montag."
+      foldout: 0
+  - contentType: 1
+    contentHeading: Super! Der zweite Teil ist geschafft!
+    contentText: "Nun weist du was Phishing \xFCberhaupt ist und auf welchen unterschiedlichen
+      Arten Angreifer dir versuchen Informationen zu entlocken. Doch wie kann man
+      Phishing erkennen? Darauf findest du im letzten Teil eine Antwort!"
+    contentImage: {fileID: 0}
+    contentChoices: []
+    contentBuckets:
+    - bucketName: Phishing
+      bucketContents:
+      - contentText: Dringendes Anliegen eines unbekannten Kollegen.
+      - contentText: Security Abteilung stellt auf deinem Computer ein Virus fest.
+      - contentText: Dein Unternehmen teilt eine Datei mit dir.
+      foldout: 0
+    - bucketName: Kein Phishing
+      bucketContents:
+      - contentText: "Nachfrage eines Kollegen zu den Meeting n\xE4chsten Montag."
+      foldout: 0
+  - contentType: 3
+    contentHeading: "Was ist typisch f\xFCr eine Phishing-Mail?"
+    contentText: "Nun weist du was Phishing \xFCberhaupt ist und auf welchen unterschiedlichen
+      Arten Angreifer dir versuchen Informationen zu entlocken. Doch wie kann man
+      Phishing erkennen? Darauf findest du im letzten Teil eine Antwort!"
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: Eine Dringende Handlungsaufforderung.
+      choiceIsCorrect: 1
+    - choiceText: Es geht um Fische und Angeln.
+      choiceIsCorrect: 0
+    - choiceText: "Unbekannte geben sich als vertrauensw\xFCrdige Quelle aus."
+      choiceIsCorrect: 1
+    - choiceText: Eine direkte Anrede.
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: Phishing
+      bucketContents:
+      - contentText: Dringendes Anliegen eines unbekannten Kollegen.
+      - contentText: Security Abteilung stellt auf deinem Computer ein Virus fest.
+      - contentText: Dein Unternehmen teilt eine Datei mit dir.
+      foldout: 0
+    - bucketName: Kein Phishing
+      bucketContents:
+      - contentText: "Nachfrage eines Kollegen zu den Meeting n\xE4chsten Montag."
+      foldout: 0
+  - contentType: 3
+    contentHeading: "Wie kann ich mich vor Phishing sch\xFCtzen?"
+    contentText: "Nun weist du was Phishing \xFCberhaupt ist und auf welchen unterschiedlichen
+      Arten Angreifer dir versuchen Informationen zu entlocken. Doch wie kann man
+      Phishing erkennen? Darauf findest du im letzten Teil eine Antwort!"
+    contentImage: {fileID: 0}
+    contentChoices:
+    - choiceText: Unerwartete Nachrichten hinterfragen.
+      choiceIsCorrect: 1
+    - choiceText: "Links in Emails niemals ungepr\xFCft anklicken."
+      choiceIsCorrect: 1
+    - choiceText: "Absender \xFCberpr\xFCfen."
+      choiceIsCorrect: 1
+    - choiceText: "Vor Phishing kann man sich nicht sch\xFCtzen."
+      choiceIsCorrect: 0
+    contentBuckets:
+    - bucketName: Phishing
+      bucketContents:
+      - contentText: Dringendes Anliegen eines unbekannten Kollegen.
+      - contentText: Security Abteilung stellt auf deinem Computer ein Virus fest.
+      - contentText: Dein Unternehmen teilt eine Datei mit dir.
+      foldout: 0
+    - bucketName: Kein Phishing
+      bucketContents:
+      - contentText: "Nachfrage eines Kollegen zu den Meeting n\xE4chsten Montag."
       foldout: 0
